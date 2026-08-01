@@ -22,6 +22,72 @@ Our focus is on a clean, modern and highly visual user experience that blends se
 
 ---
 
+---
+
+## 📸 Screenshots
+
+### Full Card
+
+The complete Nova UI Litter-Robot Card with live device status, cat tracking, litter and waste levels, system information, and controls.
+
+<p align="center">
+  <img
+    src="assets/screenshots/screenshot-main.png"
+    alt="Nova UI Litter-Robot Card – Full View"
+    width="700"
+  >
+</p>
+
+### Mobile Layout
+
+The responsive mobile layout keeps the card readable and easy to use on smaller screens.
+
+<p align="center">
+  <img
+    src="assets/screenshots/screenshot-mobile.png"
+    alt="Nova UI Litter-Robot Card – Mobile View"
+    width="380"
+  >
+</p>
+
+### Dynamic Status Display
+
+The device LED and status indicator automatically react to the current Litter-Robot state.
+
+<p align="center">
+  <img
+    src="assets/screenshots/screenshot-status.jpeg"
+    alt="Nova UI Litter-Robot Card – Dynamic Status"
+    width="700"
+  >
+</p>
+
+### Cat Tracking
+
+Each configured cat can be displayed with its photo, converted weight in kilograms, and daily visit count.
+
+<p align="center">
+  <img
+    src="assets/screenshots/screenshot-cats.jpeg"
+    alt="Nova UI Litter-Robot Card – Cat Tracking"
+    width="700"
+  >
+</p>
+
+### Device Controls
+
+The card provides direct controls for starting and stopping a cleaning cycle and resetting the Litter-Robot.
+
+<p align="center">
+  <img
+    src="assets/screenshots/screenshot-button.jpeg"
+    alt="Nova UI Litter-Robot Card – Device Controls"
+    width="700"
+  >
+</p>
+
+---
+
 ## ✨ Planned Features
 
 - Dynamic LED ring
