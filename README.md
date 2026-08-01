@@ -1,3 +1,7 @@
+<p align="center">
+  <img src="assets/nova-ui-logo.png" alt="Nova UI – Litter-Robot Card" width="700">
+</p>
+
 > [!WARNING]
 > This project is currently under active development.
 > The first public preview will be released soon.
