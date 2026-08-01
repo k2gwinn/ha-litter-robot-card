@@ -84,6 +84,7 @@ interface StatusChip {
   color: string;
   title: string;
   available: boolean;
+  entityId?: string;
 }
 
 class HaLitterRobotCard extends HTMLElement {
@@ -688,11 +689,24 @@ class HaLitterRobotCard extends HTMLElement {
       return "";
     }
 
+    const interactiveClass =
+      chip.entityId
+        ? "system-chip-interactive"
+        : "";
+
+    const entityAttribute =
+      chip.entityId
+        ? `data-entity="${chip.entityId}"`
+        : "";
+
     return `
       <div
-        class="system-chip"
+        class="system-chip ${interactiveClass}"
         title="${chip.title}"
         style="--chip-color: ${chip.color};"
+        ${entityAttribute}
+        role="${chip.entityId ? "button" : "presentation"}"
+        tabindex="${chip.entityId ? "0" : "-1"}"
       >
         <ha-icon
           class="system-chip-icon"
@@ -739,6 +753,62 @@ class HaLitterRobotCard extends HTMLElement {
         error,
       );
     }
+  }
+
+  private attachStatusChipEvents(): void {
+    const chips =
+      this.querySelectorAll<HTMLElement>(
+        ".system-chip[data-entity]",
+      );
+
+    const openMoreInfo = (
+      chip: HTMLElement,
+    ): void => {
+      const entityId =
+        chip.dataset.entity;
+
+      if (!entityId) {
+        return;
+      }
+
+      this.dispatchEvent(
+        new CustomEvent(
+          "hass-more-info",
+          {
+            detail: {
+              entityId,
+            },
+            bubbles: true,
+            composed: true,
+          },
+        ),
+      );
+    };
+
+    chips.forEach((chip) => {
+      chip.addEventListener(
+        "click",
+        () => {
+          openMoreInfo(chip);
+        },
+      );
+
+      chip.addEventListener(
+        "keydown",
+        (event) => {
+          if (
+            event.key !== "Enter" &&
+            event.key !== " "
+          ) {
+            return;
+          }
+
+          event.preventDefault();
+
+          openMoreInfo(chip);
+        },
+      );
+    });
   }
 
   private attachControlEvents(): void {
@@ -1122,6 +1192,7 @@ class HaLitterRobotCard extends HTMLElement {
             this.isAvailable(
               powerEntity,
             ),
+        entityId: powerEntity,
         },
         {
           icon:
@@ -1140,6 +1211,7 @@ class HaLitterRobotCard extends HTMLElement {
             this.isAvailable(
               sleepEntity,
             ),
+        entityId: sleepEntity,
         },
         {
           icon: "mdi:sync",
@@ -1157,6 +1229,7 @@ class HaLitterRobotCard extends HTMLElement {
             this.isAvailable(
               cyclesEntity,
             ),
+        entityId: cyclesEntity,
         },
         {
           icon: "mdi:clock-outline",
@@ -1173,6 +1246,7 @@ class HaLitterRobotCard extends HTMLElement {
             this.isAvailable(
               cycleDelayEntity,
             ),
+        entityId: cycleDelayEntity,
         },
         {
           icon: "mdi:lightbulb-outline",
@@ -1188,6 +1262,7 @@ class HaLitterRobotCard extends HTMLElement {
             this.isAvailable(
               globeBrightnessEntity,
             ),
+        entityId: globeLightEntity,
         },
       ];
 
@@ -1458,6 +1533,36 @@ class HaLitterRobotCard extends HTMLElement {
           gap: 7px;
           padding: 5px 11px;
           white-space: nowrap;
+        }
+
+        .system-chip-interactive {
+          cursor: pointer;
+          border-radius: 11px;
+          transition:
+            background 0.15s ease,
+            transform 0.15s ease;
+        }
+
+        .system-chip-interactive:hover {
+          background:
+            rgba(
+              255,
+              255,
+              255,
+              0.055
+            );
+        }
+
+        .system-chip-interactive:active {
+          transform:
+            scale(0.96);
+        }
+
+        .system-chip-interactive:focus-visible {
+          outline:
+            2px solid
+            var(--chip-color);
+          outline-offset: -2px;
         }
 
         .system-chip +
@@ -2551,6 +2656,7 @@ class HaLitterRobotCard extends HTMLElement {
       </ha-card>
     `;
 
+    this.attachStatusChipEvents();
     this.attachControlEvents();
   }
 
