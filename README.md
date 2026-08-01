@@ -3,8 +3,8 @@
 </p>
 
 > [!WARNING]
-> This project is currently under active development.
-> The first public preview will be released soon.
+> This project is currently available as a public alpha release.
+> Features and configuration options may still change.
 
 # 🚀 Nova UI
 
@@ -32,7 +32,7 @@ The complete Nova UI Litter-Robot Card with live device status, cat tracking, li
 
 <p align="center">
   <img
-    src="assets/screenshots/screenshot-main.png"
+    src="https://raw.githubusercontent.com/smokedropp23/ha-litter-robot-card/main/assets/screenshots/screenshot-main.png"
     alt="Nova UI Litter-Robot Card – Full View"
     width="700"
   >
@@ -44,7 +44,7 @@ The responsive mobile layout keeps the card readable and easy to use on smaller 
 
 <p align="center">
   <img
-    src="assets/screenshots/screenshot-mobile.png"
+    src="https://raw.githubusercontent.com/smokedropp23/ha-litter-robot-card/main/assets/screenshots/screenshot-mobile.png"
     alt="Nova UI Litter-Robot Card – Mobile View"
     width="380"
   >
@@ -56,7 +56,7 @@ The device LED and status indicator automatically react to the current Litter-Ro
 
 <p align="center">
   <img
-    src="assets/screenshots/screenshot-status.jpeg"
+    src="https://raw.githubusercontent.com/smokedropp23/ha-litter-robot-card/main/assets/screenshots/screenshot-status.jpeg"
     alt="Nova UI Litter-Robot Card – Dynamic Status"
     width="700"
   >
@@ -68,7 +68,7 @@ Each configured cat can be displayed with its photo, converted weight in kilogra
 
 <p align="center">
   <img
-    src="assets/screenshots/screenshot-cats.jpeg"
+    src="https://raw.githubusercontent.com/smokedropp23/ha-litter-robot-card/main/assets/screenshots/screenshot-cats.jpeg"
     alt="Nova UI Litter-Robot Card – Cat Tracking"
     width="700"
   >
@@ -80,7 +80,7 @@ The card provides direct controls for starting and stopping a cleaning cycle and
 
 <p align="center">
   <img
-    src="assets/screenshots/screenshot-button.jpeg"
+    src="https://raw.githubusercontent.com/smokedropp23/ha-litter-robot-card/main/assets/screenshots/screenshot-button.jpeg"
     alt="Nova UI Litter-Robot Card – Device Controls"
     width="700"
   >
