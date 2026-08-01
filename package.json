@@ -1,0 +1,27 @@
+{
+  "name": "ha-litter-robot-card",
+  "version": "0.1.0",
+  "description": "A premium Home Assistant Lovelace card for the Litter-Robot 4.",
+  "main": "index.js",
+  "scripts": {
+    "build": "tsc && vite build",
+    "watch": "vite build --watch"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/smokedropp23/ha-litter-robot-card.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "module",
+  "bugs": {
+    "url": "https://github.com/smokedropp23/ha-litter-robot-card/issues"
+  },
+  "homepage": "https://github.com/smokedropp23/ha-litter-robot-card#readme",
+  "devDependencies": {
+    "@types/node": "^26.1.2",
+    "typescript": "^7.0.2",
+    "vite": "^8.2.0"
+  }
+}

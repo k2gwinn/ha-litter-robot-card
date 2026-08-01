@@ -113,23 +113,23 @@ The card provides direct controls for starting and stopping a cleaning cycle and
 
 - [x] Repository created
 - [x] Project vision
-- [ ] Display first device image
-- [ ] Dynamic LED ring
-- [ ] Connect first Home Assistant entity
+- [x] Display first device image
+- [x] Dynamic LED ring
+- [x] Connect first Home Assistant entity
 
 ### Version 0.2.0
 
-- [ ] Status panel
-- [ ] Litter level
-- [ ] Waste drawer level
-- [ ] Cat weight
-- [ ] Cycle counter
+- [x] Status panel
+- [x] Litter level
+- [x] Waste drawer level
+- [x] Cat weight
+- [x] Cycle counter
 
 ### Version 0.3.0
 
-- [ ] Control buttons
+- [x] Control buttons
 - [ ] Smooth animations
-- [ ] Mobile optimization
+- [x] Mobile optimization
 - [ ] Theme support
 
 ### Version 0.4.0
