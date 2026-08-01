@@ -1,6 +1,6 @@
 {
   "name": "ha-litter-robot-card",
-  "version": "0.3.0-alpha.3",
+  "version": "0.3.0-alpha.4",
   "description": "A premium Home Assistant Lovelace card for the Litter-Robot 4.",
   "main": "index.js",
   "scripts": {
