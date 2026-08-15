@@ -2025,9 +2025,10 @@ class HaLitterRobotCard extends HTMLElement {
             width 0.35s ease;
         }
 
+        /* Width is applied inline on the element, NOT here -- same light-DOM
+           collision as .status-dot. Interpolated here, every card's bar took the
+           percentage from whichever card rendered last. */
         .progress-litter {
-          width:
-            ${litterBar}%;
           background:
             linear-gradient(
               90deg,
@@ -2045,8 +2046,6 @@ class HaLitterRobotCard extends HTMLElement {
         }
 
         .progress-waste {
-          width:
-            ${wasteBar}%;
           background:
             linear-gradient(
               90deg,
@@ -2550,6 +2549,7 @@ class HaLitterRobotCard extends HTMLElement {
                       progress-fill
                       progress-litter
                     "
+                    style="width: ${litterBar}%;"
                   ></div>
                 </div>
               </div>
@@ -2596,6 +2596,7 @@ class HaLitterRobotCard extends HTMLElement {
                       progress-fill
                       progress-waste
                     "
+                    style="width: ${wasteBar}%;"
                   ></div>
                 </div>
               </div>
