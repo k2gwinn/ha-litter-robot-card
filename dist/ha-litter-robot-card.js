@@ -113,9 +113,9 @@ var e = class extends HTMLElement {
 			case "pd": return "#ffd028";
 			case "cd":
 			case "cst": return "#ff3157";
-			case "dfs": return "#ff8a2b";
+			case "dfs": return "#ff3157";
 			case "off":
-			case "offline": return "#8a8a8a";
+			case "offline": return "#5c6370";
 			default: return "#8a8a8a";
 		}
 	}
@@ -273,13 +273,13 @@ var e = class extends HTMLElement {
 		});
 	}
 	renderCard() {
-		let e = this.config?.name ?? "Litter-Robot 4", t = this.config?.entity ?? "sensor.cleany_statuscode", n = this.config?.sleep_entity ?? "binary_sensor.cleany_ruhemodus", r = this.config?.power_entity ?? "binary_sensor.cleany_stromversorgung", i = this.config?.cycles_entity ?? "sensor.cleany_gesamtzyklen", a = this.config?.cycle_delay_entity ?? "select.cleany_wartezeit_fur_den_reinigungszyklus_in_minuten", o = this.config?.globe_light_entity ?? "select.cleany_globe_beleuchtung", s = this.config?.globe_brightness_entity ?? "select.cleany_globe_helligkeit", c = this.config?.firmware_entity ?? "update.cleany_firmware", l = this.config?.last_pet_weight_entity ?? "sensor.cleany_gewicht_des_haustiers", u = this.config?.vacuum_entity ?? "vacuum.cleany_katzenklo", d = this.config?.reset_button_entity ?? "button.cleany_zurucksetzen", f = this.config?.show_status_bar ?? !0, p = this.config?.show_controls ?? !0, m = this.config?.show_device_image ?? !0, h = this.config?.status_bar_mode ?? "values", g = this.config?.status_bar_mobile_mode ?? "icons", _ = this.getState(t), v = this.getState(n) === "on", y = this.getLedDisplay(_, v), b = v ? "Sleep mode" : this.getStatusText(_), x = v ? "#8b5cf6" : this.getStatusColor(_), S = this.getFirmwareVersion(c), C = this.getPercentage(this.config?.litter_entity), w = this.getPercentage(this.config?.waste_entity), T = C === null ? "–" : `${Math.round(C)} %`, E = w === null ? "–" : `${Math.round(w)} %`, D = C ?? 0, O = w ?? 0, k = this.getNumber(l), A = this.getEntity(l), j = this.getLastDetectedCat(k), M = j?.name ?? "Unknown cat", N = this.formatPounds(k), P = j ? this.formatVisits(j.visits) : "No clear match", F = this.formatRelativeTime(A?.last_updated), I = j?.image ? `
+		let e = this.config?.name ?? "Litter-Robot 4", t = this.config?.entity ?? "sensor.cleany_statuscode", n = this.config?.sleep_entity ?? "binary_sensor.cleany_ruhemodus", r = this.config?.power_entity ?? "binary_sensor.cleany_stromversorgung", i = this.config?.cycles_entity ?? "sensor.cleany_gesamtzyklen", a = this.config?.cycle_delay_entity ?? "select.cleany_wartezeit_fur_den_reinigungszyklus_in_minuten", o = this.config?.globe_light_entity ?? "select.cleany_globe_beleuchtung", s = this.config?.globe_brightness_entity ?? "select.cleany_globe_helligkeit", c = this.config?.firmware_entity ?? "update.cleany_firmware", l = this.config?.last_pet_weight_entity ?? "sensor.cleany_gewicht_des_haustiers", u = this.config?.vacuum_entity ?? "vacuum.cleany_katzenklo", d = this.config?.reset_button_entity ?? "button.cleany_zurucksetzen", f = this.config?.show_status_bar ?? !0, p = this.config?.show_controls ?? !0, m = this.config?.show_device_image ?? !0, h = this.config?.status_bar_mode ?? "values", g = this.config?.status_bar_mobile_mode ?? "icons", _ = this.getState(t), v = this.getState(n) === "on", y = this.getLedDisplay(_, v), b = v ? "Sleep mode" : this.getStatusText(_), x = v ? "#8b5cf6" : this.getStatusColor(_), S = (e) => e === "transparent" ? "none" : `drop-shadow(0 0 5px ${e}) drop-shadow(0 0 12px ${e})`, C = !v && (_ === "off" || _ === "offline") ? "none" : `0 0 10px ${x}`, w = this.getFirmwareVersion(c), T = this.getPercentage(this.config?.litter_entity), E = this.getPercentage(this.config?.waste_entity), D = T === null ? "–" : `${Math.round(T)} %`, O = E === null ? "–" : `${Math.round(E)} %`, k = T ?? 0, A = E ?? 0, j = this.getNumber(l), M = this.getEntity(l), N = this.getLastDetectedCat(j), P = N?.name ?? "Unknown cat", F = this.formatPounds(j), I = N ? this.formatVisits(N.visits) : "No clear match", L = this.formatRelativeTime(M?.last_updated), R = N?.image ? `
           <img
             class="cat-image"
-            src="${j.image}"
-            alt="${j.name}"
+            src="${N.image}"
+            alt="${N.name}"
           />
-        ` : "\n          <div class=\"cat-placeholder\">\n            🐈\n          </div>\n        ", L = (this.config?.cats ?? []).map((e, t) => {
+        ` : "\n          <div class=\"cat-placeholder\">\n            🐈\n          </div>\n        ", z = (this.config?.cats ?? []).map((e, t) => {
 			let n = this.getNumber(e.weight_entity), r = this.getNumber(e.visits_entity), i = this.formatPounds(n), a = this.formatVisits(r), o = e.image ? `
                 <img
                   class="profile-image"
@@ -309,13 +309,13 @@ var e = class extends HTMLElement {
               </div>
             </article>
           `;
-		}).join(""), R = this.getState(r), z = this.getNumber(i), B = this.getState(a), V = this.getState(o), H = this.getState(s), U = R === "on", W = this.getCompactLightValue(V, H), G = this.isAvailable(u), K = this.isAvailable(d), q = [
+		}).join(""), B = this.getState(r), V = this.getNumber(i), H = this.getState(a), U = this.getState(o), W = this.getState(s), G = B === "on", K = this.getCompactLightValue(U, W), q = this.isAvailable(u), J = this.isAvailable(d), Y = [
 			{
-				icon: U ? "mdi:power-plug" : "mdi:power-plug-off",
+				icon: G ? "mdi:power-plug" : "mdi:power-plug-off",
 				label: "Power",
-				value: U ? "On" : "Off",
-				color: U ? "#62df76" : "#ff5c6c",
-				title: U ? "Power connected" : "Power disconnected",
+				value: G ? "On" : "Off",
+				color: G ? "#62df76" : "#ff5c6c",
+				title: G ? "Power connected" : "Power disconnected",
 				available: this.isAvailable(r),
 				entityId: r
 			},
@@ -331,7 +331,7 @@ var e = class extends HTMLElement {
 			{
 				icon: "mdi:sync",
 				label: "Cycles",
-				value: z === null ? "–" : `${Math.round(z)}`,
+				value: V === null ? "–" : `${Math.round(V)}`,
 				color: "#2f9cff",
 				title: "Total number of clean cycles",
 				available: this.isAvailable(i),
@@ -340,7 +340,7 @@ var e = class extends HTMLElement {
 			{
 				icon: "mdi:clock-outline",
 				label: "Wait",
-				value: this.formatDelay(B, h !== "labels"),
+				value: this.formatDelay(H, h !== "labels"),
 				color: "#ffbd24",
 				title: "Wait time before the clean cycle",
 				available: this.isAvailable(a),
@@ -349,7 +349,7 @@ var e = class extends HTMLElement {
 			{
 				icon: "mdi:lightbulb-outline",
 				label: "Light",
-				value: W,
+				value: K,
 				color: "#ffd02f",
 				title: "Globe light and brightness",
 				available: this.isAvailable(o) || this.isAvailable(s),
@@ -417,8 +417,15 @@ var e = class extends HTMLElement {
         .status-badge {
           display: flex;
           align-items: center;
+          justify-content: center;
           gap: 8px;
-          min-width: 0;
+          /* Uniform pill across cards: without a floor, "Ready" renders about
+             half the width of "Waste drawer full", and nowrap stops two-word
+             statuses like "Powered off" wrapping to a second line and making
+             that one card's header taller than its neighbours. */
+          min-width: 150px;
+          white-space: nowrap;
+          flex: 0 0 auto;
           padding: 8px 12px;
           border-radius: 999px;
           background:
@@ -443,16 +450,16 @@ var e = class extends HTMLElement {
           font-size: 13px;
         }
 
+        /* The colour is applied inline on the element, NOT here. This card
+           renders into the light DOM, so every instance's <style> block applies
+           page-wide; a per-card colour written into this rule is overwritten by
+           whichever card renders last, and every dot on the page ends up the
+           same colour. Inline styles are per-element and cannot collide. */
         .status-dot {
           flex: 0 0 auto;
           width: 9px;
           height: 9px;
           border-radius: 50%;
-          background:
-            ${x};
-          box-shadow:
-            0 0 10px
-            ${x};
         }
 
         .robot-area {
@@ -485,10 +492,9 @@ var e = class extends HTMLElement {
           pointer-events: none;
         }
 
+        /* Colour and glow come from inline styles on the element -- same
+           light-DOM collision as .status-dot. See the note there. */
         .led-main {
-          background:
-            ${y.mainColor};
-
           -webkit-mask-image:
             url(
               "/local/nova-ui/litter-robot-led-main.png"
@@ -507,22 +513,9 @@ var e = class extends HTMLElement {
           mask-repeat: no-repeat;
           mask-position: center;
           mask-size: contain;
-
-          filter:
-            drop-shadow(
-              0 0 5px
-              ${y.mainColor}
-            )
-            drop-shadow(
-              0 0 12px
-              ${y.mainColor}
-            );
         }
 
         .led-small {
-          background:
-            ${y.smallColor};
-
           -webkit-mask-image:
             url(
               "/local/nova-ui/litter-robot-led-small.png"
@@ -541,16 +534,6 @@ var e = class extends HTMLElement {
           mask-repeat: no-repeat;
           mask-position: center;
           mask-size: contain;
-
-          filter:
-            drop-shadow(
-              0 0 5px
-              ${y.smallColor}
-            )
-            drop-shadow(
-              0 0 12px
-              ${y.smallColor}
-            );
         }
 
         .solid {
@@ -607,8 +590,13 @@ var e = class extends HTMLElement {
           display: flex;
           align-items: center;
           justify-content: center;
-          flex: 1 1 0;
-          min-width: 0;
+          /* flex: 1 1 0 stretched chips to fill the bar, so a box exposing one
+             chip got a full-width pill while its neighbour exposing two got two
+             halves -- the same chip rendered at different sizes card to card.
+             A fixed basis keeps every chip the same size regardless of how many
+             entities a given box happens to expose. */
+          flex: 0 0 auto;
+          min-width: 96px;
           gap: 7px;
           padding: 5px 11px;
           white-space: nowrap;
@@ -1092,7 +1080,7 @@ var e = class extends HTMLElement {
 
         .progress-litter {
           width:
-            ${D}%;
+            ${k}%;
           background:
             linear-gradient(
               90deg,
@@ -1111,7 +1099,7 @@ var e = class extends HTMLElement {
 
         .progress-waste {
           width:
-            ${O}%;
+            ${A}%;
           background:
             linear-gradient(
               90deg,
@@ -1289,8 +1277,14 @@ var e = class extends HTMLElement {
           }
 
           .status-badge {
+            /* Narrow screens: keep the pills uniform but let them shrink, and
+               drop the desktop floor so a long status cannot overflow the card.
+               A max-width here alone would fight the desktop min-width. */
+            min-width: 118px;
             max-width: 48%;
             padding: 7px 10px;
+            overflow: hidden;
+            text-overflow: ellipsis;
           }
 
           .robot-area {
@@ -1423,12 +1417,12 @@ var e = class extends HTMLElement {
                 ${e}
               </h2>
 
-              ${S ? `
+              ${w ? `
                     <div
                       class="firmware-subtitle"
                     >
                       Firmware
-                      ${S}
+                      ${w}
                     </div>
                   ` : ""}
             </div>
@@ -1436,6 +1430,10 @@ var e = class extends HTMLElement {
             <div class="status-badge">
               <span
                 class="status-dot"
+                style="
+                  background: ${x};
+                  box-shadow: ${C};
+                "
               ></span>
 
               <span>
@@ -1461,6 +1459,10 @@ var e = class extends HTMLElement {
                         led-main
                         ${y.mainMode}
                       "
+                      style="
+                        background: ${y.mainColor};
+                        filter: ${S(y.mainColor)};
+                      "
                     ></div>
 
                     <div
@@ -1469,16 +1471,20 @@ var e = class extends HTMLElement {
                         led-small
                         ${y.smallMode}
                       "
+                      style="
+                        background: ${y.smallColor};
+                        filter: ${S(y.smallColor)};
+                      "
                     ></div>
                   </div>
                 </div>
               ` : ""}
 
-          ${f && q ? `
+          ${f && Y ? `
                 <section
                   class="system-status-bar"
                 >
-                  ${q}
+                  ${Y}
                 </section>
               ` : ""}
 
@@ -1488,25 +1494,25 @@ var e = class extends HTMLElement {
             </div>
 
             <div class="visit-content">
-              ${I}
+              ${R}
 
               <div class="visit-info">
                 <div class="visit-top">
                   <div class="cat-name">
-                    ${M}
+                    ${P}
                   </div>
 
                   <div class="visit-time">
-                    ${F}
+                    ${L}
                   </div>
                 </div>
 
                 <div class="visit-weight">
-                  ${N}
+                  ${F}
                 </div>
 
                 <div class="visit-count">
-                  ${P}
+                  ${I}
                 </div>
               </div>
             </div>
@@ -1518,7 +1524,7 @@ var e = class extends HTMLElement {
             </div>
 
             <div class="cats-grid">
-              ${L || "\n                  <div class=\"empty-cats\">\n                    No cats\n                    configured\n                  </div>\n                "}
+              ${z || "\n                  <div class=\"empty-cats\">\n                    No cats\n                    configured\n                  </div>\n                "}
             </div>
           </section>
 
@@ -1551,13 +1557,13 @@ var e = class extends HTMLElement {
                   <div
                     class="level-value"
                   >
-                    ${T}
+                    ${D}
                   </div>
 
                   <div
                     class="level-state"
                   >
-                    ${this.getLevelText(C, "litter")}
+                    ${this.getLevelText(T, "litter")}
                   </div>
                 </div>
 
@@ -1594,13 +1600,13 @@ var e = class extends HTMLElement {
                   <div
                     class="level-value"
                   >
-                    ${E}
+                    ${O}
                   </div>
 
                   <div
                     class="level-state"
                   >
-                    ${this.getLevelText(w, "waste")}
+                    ${this.getLevelText(E, "waste")}
                   </div>
                 </div>
 
@@ -1636,7 +1642,7 @@ var e = class extends HTMLElement {
                       "
                       type="button"
                       data-action="start"
-                      ${G ? "" : "disabled"}
+                      ${q ? "" : "disabled"}
                     >
                       <ha-icon
                         class="control-icon"
@@ -1657,7 +1663,7 @@ var e = class extends HTMLElement {
                       "
                       type="button"
                       data-action="stop"
-                      ${G ? "" : "disabled"}
+                      ${q ? "" : "disabled"}
                     >
                       <ha-icon
                         class="control-icon"
@@ -1678,7 +1684,7 @@ var e = class extends HTMLElement {
                       "
                       type="button"
                       data-action="reset"
-                      ${K ? "" : "disabled"}
+                      ${J ? "" : "disabled"}
                     >
                       <ha-icon
                         class="control-icon"

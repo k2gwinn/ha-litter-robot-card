@@ -327,12 +327,16 @@ class HaLitterRobotCard extends HTMLElement {
       case "cst":
         return "#ff3157";
 
+      // Drawer full is a "go deal with this now" state, so it reads red rather
+      // than the amber upstream used.
       case "dfs":
-        return "#ff8a2b";
+        return "#ff3157";
 
+      // Dim grey, and rendered without a glow, so an off box looks unlit
+      // rather than lit-but-grey.
       case "off":
       case "offline":
-        return "#8a8a8a";
+        return "#5c6370";
 
       default:
         return "#8a8a8a";
@@ -973,6 +977,22 @@ class HaLitterRobotCard extends HTMLElement {
         ? "#8b5cf6"
         : this.getStatusColor(status);
 
+    // A transparent LED is an unlit one; giving it a drop-shadow paints a halo
+    // around nothing, so those get no filter.
+    const ledGlow = (color: string) =>
+      color === "transparent"
+        ? "none"
+        : `drop-shadow(0 0 5px ${color}) drop-shadow(0 0 12px ${color})`;
+
+    // A powered-off or offline box should read as an unlit lamp, so it gets no
+    // glow at all -- the halo is what makes the other states look "on".
+    const statusGlow =
+      !sleepModeActive &&
+      (status === "off" ||
+        status === "offline")
+        ? "none"
+        : `0 0 10px ${statusColor}`;
+
     const firmwareVersion =
       this.getFirmwareVersion(
         firmwareEntity,
@@ -1335,8 +1355,15 @@ class HaLitterRobotCard extends HTMLElement {
         .status-badge {
           display: flex;
           align-items: center;
+          justify-content: center;
           gap: 8px;
-          min-width: 0;
+          /* Uniform pill across cards: without a floor, "Ready" renders about
+             half the width of "Waste drawer full", and nowrap stops two-word
+             statuses like "Powered off" wrapping to a second line and making
+             that one card's header taller than its neighbours. */
+          min-width: 150px;
+          white-space: nowrap;
+          flex: 0 0 auto;
           padding: 8px 12px;
           border-radius: 999px;
           background:
@@ -1361,16 +1388,16 @@ class HaLitterRobotCard extends HTMLElement {
           font-size: 13px;
         }
 
+        /* The colour is applied inline on the element, NOT here. This card
+           renders into the light DOM, so every instance's <style> block applies
+           page-wide; a per-card colour written into this rule is overwritten by
+           whichever card renders last, and every dot on the page ends up the
+           same colour. Inline styles are per-element and cannot collide. */
         .status-dot {
           flex: 0 0 auto;
           width: 9px;
           height: 9px;
           border-radius: 50%;
-          background:
-            ${statusColor};
-          box-shadow:
-            0 0 10px
-            ${statusColor};
         }
 
         .robot-area {
@@ -1403,10 +1430,9 @@ class HaLitterRobotCard extends HTMLElement {
           pointer-events: none;
         }
 
+        /* Colour and glow come from inline styles on the element -- same
+           light-DOM collision as .status-dot. See the note there. */
         .led-main {
-          background:
-            ${display.mainColor};
-
           -webkit-mask-image:
             url(
               "/local/nova-ui/litter-robot-led-main.png"
@@ -1425,22 +1451,9 @@ class HaLitterRobotCard extends HTMLElement {
           mask-repeat: no-repeat;
           mask-position: center;
           mask-size: contain;
-
-          filter:
-            drop-shadow(
-              0 0 5px
-              ${display.mainColor}
-            )
-            drop-shadow(
-              0 0 12px
-              ${display.mainColor}
-            );
         }
 
         .led-small {
-          background:
-            ${display.smallColor};
-
           -webkit-mask-image:
             url(
               "/local/nova-ui/litter-robot-led-small.png"
@@ -1459,16 +1472,6 @@ class HaLitterRobotCard extends HTMLElement {
           mask-repeat: no-repeat;
           mask-position: center;
           mask-size: contain;
-
-          filter:
-            drop-shadow(
-              0 0 5px
-              ${display.smallColor}
-            )
-            drop-shadow(
-              0 0 12px
-              ${display.smallColor}
-            );
         }
 
         .solid {
@@ -1525,8 +1528,13 @@ class HaLitterRobotCard extends HTMLElement {
           display: flex;
           align-items: center;
           justify-content: center;
-          flex: 1 1 0;
-          min-width: 0;
+          /* flex: 1 1 0 stretched chips to fill the bar, so a box exposing one
+             chip got a full-width pill while its neighbour exposing two got two
+             halves -- the same chip rendered at different sizes card to card.
+             A fixed basis keeps every chip the same size regardless of how many
+             entities a given box happens to expose. */
+          flex: 0 0 auto;
+          min-width: 96px;
           gap: 7px;
           padding: 5px 11px;
           white-space: nowrap;
@@ -2207,8 +2215,14 @@ class HaLitterRobotCard extends HTMLElement {
           }
 
           .status-badge {
+            /* Narrow screens: keep the pills uniform but let them shrink, and
+               drop the desktop floor so a long status cannot overflow the card.
+               A max-width here alone would fight the desktop min-width. */
+            min-width: 118px;
             max-width: 48%;
             padding: 7px 10px;
+            overflow: hidden;
+            text-overflow: ellipsis;
           }
 
           .robot-area {
@@ -2358,6 +2372,10 @@ class HaLitterRobotCard extends HTMLElement {
             <div class="status-badge">
               <span
                 class="status-dot"
+                style="
+                  background: ${statusColor};
+                  box-shadow: ${statusGlow};
+                "
               ></span>
 
               <span>
@@ -2385,6 +2403,10 @@ class HaLitterRobotCard extends HTMLElement {
                         led-main
                         ${display.mainMode}
                       "
+                      style="
+                        background: ${display.mainColor};
+                        filter: ${ledGlow(display.mainColor)};
+                      "
                     ></div>
 
                     <div
@@ -2392,6 +2414,10 @@ class HaLitterRobotCard extends HTMLElement {
                         led
                         led-small
                         ${display.smallMode}
+                      "
+                      style="
+                        background: ${display.smallColor};
+                        filter: ${ledGlow(display.smallColor)};
                       "
                     ></div>
                   </div>
