@@ -1078,9 +1078,10 @@ var e = class extends HTMLElement {
             width 0.35s ease;
         }
 
+        /* Width is applied inline on the element, NOT here -- same light-DOM
+           collision as .status-dot. Interpolated here, every card's bar took the
+           percentage from whichever card rendered last. */
         .progress-litter {
-          width:
-            ${A}%;
           background:
             linear-gradient(
               90deg,
@@ -1098,8 +1099,6 @@ var e = class extends HTMLElement {
         }
 
         .progress-waste {
-          width:
-            ${j}%;
           background:
             linear-gradient(
               90deg,
@@ -1575,6 +1574,7 @@ var e = class extends HTMLElement {
                       progress-fill
                       progress-litter
                     "
+                    style="width: ${A}%;"
                   ></div>
                 </div>
               </div>
@@ -1618,6 +1618,7 @@ var e = class extends HTMLElement {
                       progress-fill
                       progress-waste
                     "
+                    style="width: ${j}%;"
                   ></div>
                 </div>
               </div>
