@@ -2502,10 +2502,6 @@ class HaLitterRobotCard extends HTMLElement {
           }
 
           <section class="details">
-            <div class="section-title">
-              Litter &amp; waste
-            </div>
-
             <div class="levels">
               <div class="level">
                 <div class="level-head">
@@ -2609,12 +2605,6 @@ class HaLitterRobotCard extends HTMLElement {
                 <section
                   class="controls-card"
                 >
-                  <div
-                    class="section-title"
-                  >
-                    Controls
-                  </div>
-
                   <div
                     class="controls-grid"
                   >
