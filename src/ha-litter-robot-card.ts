@@ -96,7 +96,7 @@ class HaLitterRobotCard extends HTMLElement {
   ): void {
     if (!config) {
       throw new Error(
-        "Ungültige Kartenkonfiguration",
+        "Invalid card configuration",
       );
     }
 
@@ -275,33 +275,33 @@ class HaLitterRobotCard extends HTMLElement {
   ): string {
     switch (status) {
       case "rdy":
-        return "Bereit";
+        return "Ready";
 
       case "ccp":
-        return "Reinigung läuft";
+        return "Cleaning";
 
       case "cd":
-        return "Katze erkannt";
+        return "Cat detected";
 
       case "cst":
-        return "Wartezeit nach Besuch";
+        return "Settling after visit";
 
       case "dfs":
-        return "Abfallschublade voll";
+        return "Waste drawer full";
 
       case "p":
       case "pd":
-        return "Pausiert";
+        return "Paused";
 
       case "off":
-        return "Ausgeschaltet";
+        return "Powered off";
 
       case "offline":
         return "Offline";
 
       default:
         return status === "unknown"
-          ? "Status unbekannt"
+          ? "Status unknown"
           : status.toUpperCase();
     }
   }
@@ -350,44 +350,44 @@ class HaLitterRobotCard extends HTMLElement {
     const kilograms =
       this.poundsToKilograms(pounds);
 
-    return `${kilograms
-      .toFixed(2)
-      .replace(".", ",")} kg`;
+    return `${kilograms.toFixed(
+      2,
+    )} kg`;
   }
 
   private formatVisits(
     visits: number | null,
   ): string {
     if (visits === null) {
-      return "Keine Besuchsdaten";
+      return "No visit data";
     }
 
     const roundedVisits =
       Math.round(visits);
 
     if (roundedVisits === 0) {
-      return "Heute kein Besuch";
+      return "No visits today";
     }
 
     if (roundedVisits === 1) {
-      return "Heute 1 Besuch";
+      return "1 visit today";
     }
 
-    return `Heute ${roundedVisits} Besuche`;
+    return `${roundedVisits} visits today`;
   }
 
   private formatRelativeTime(
     dateValue?: string,
   ): string {
     if (!dateValue) {
-      return "Zeit unbekannt";
+      return "Time unknown";
     }
 
     const timestamp =
       new Date(dateValue).getTime();
 
     if (Number.isNaN(timestamp)) {
-      return "Zeit unbekannt";
+      return "Time unknown";
     }
 
     const differenceSeconds = Math.max(
@@ -398,7 +398,7 @@ class HaLitterRobotCard extends HTMLElement {
     );
 
     if (differenceSeconds < 60) {
-      return "Gerade eben";
+      return "Just now";
     }
 
     const minutes = Math.floor(
@@ -406,7 +406,7 @@ class HaLitterRobotCard extends HTMLElement {
     );
 
     if (minutes < 60) {
-      return `Vor ${minutes} Min.`;
+      return `${minutes} min ago`;
     }
 
     const hours = Math.floor(
@@ -415,8 +415,8 @@ class HaLitterRobotCard extends HTMLElement {
 
     if (hours < 24) {
       return hours === 1
-        ? "Vor 1 Std."
-        : `Vor ${hours} Std.`;
+        ? "1 hr ago"
+        : `${hours} hrs ago`;
     }
 
     const days = Math.floor(
@@ -424,8 +424,8 @@ class HaLitterRobotCard extends HTMLElement {
     );
 
     return days === 1
-      ? "Vor 1 Tag"
-      : `Vor ${days} Tagen`;
+      ? "1 day ago"
+      : `${days} days ago`;
   }
 
   private getLastDetectedCat(
@@ -493,30 +493,30 @@ class HaLitterRobotCard extends HTMLElement {
     type: "litter" | "waste",
   ): string {
     if (value === null) {
-      return "Keine Daten";
+      return "No data";
     }
 
     if (type === "litter") {
       if (value >= 60) {
-        return "Ausreichend";
+        return "Plenty left";
       }
 
       if (value >= 30) {
-        return "Wird weniger";
+        return "Running low";
       }
 
-      return "Bitte nachfüllen";
+      return "Refill needed";
     }
 
     if (value < 50) {
-      return "Noch okay";
+      return "Still fine";
     }
 
     if (value < 80) {
-      return "Bald leeren";
+      return "Empty soon";
     }
 
-    return "Bitte leeren";
+    return "Empty now";
   }
 
   private formatSelectValue(
@@ -532,14 +532,14 @@ class HaLitterRobotCard extends HTMLElement {
 
     const translations:
       Record<string, string> = {
-        on: "An",
-        off: "Aus",
+        on: "On",
+        off: "Off",
         auto: "Auto",
-        low: "Niedrig",
-        medium: "Mittel",
-        high: "Hoch",
-        dim: "Gedimmt",
-        bright: "Hell",
+        low: "Low",
+        medium: "Medium",
+        high: "High",
+        dim: "Dim",
+        bright: "Bright",
       };
 
     const normalized =
@@ -596,12 +596,11 @@ class HaLitterRobotCard extends HTMLElement {
       return value;
     }
 
-    const numericValue =
-      match[0].replace(".", ",");
+    const numericValue = match[0];
 
     return compact
       ? numericValue
-      : `${numericValue} Min.`;
+      : `${numericValue} min`;
   }
 
   private getFirmwareVersion(
@@ -749,7 +748,7 @@ class HaLitterRobotCard extends HTMLElement {
       );
     } catch (error) {
       console.error(
-        `Nova UI: Dienst ${domain}.${service} konnte nicht ausgeführt werden.`,
+        `Nova UI: service ${domain}.${service} could not be called.`,
         error,
       );
     }
@@ -867,7 +866,7 @@ class HaLitterRobotCard extends HTMLElement {
         if (
           confirmReset &&
           !window.confirm(
-            "Litter-Robot wirklich zurücksetzen?",
+            "Really reset the Litter-Robot?",
           )
         ) {
           return;
@@ -968,7 +967,7 @@ class HaLitterRobotCard extends HTMLElement {
 
     const statusText =
       sleepModeActive
-        ? "Ruhemodus"
+        ? "Sleep mode"
         : this.getStatusText(status);
 
     const statusColor =
@@ -1028,7 +1027,7 @@ class HaLitterRobotCard extends HTMLElement {
 
     const lastVisitName =
       matchedCat?.name ??
-      "Unbekannte Katze";
+      "Unknown cat";
 
     const lastVisitWeight =
       this.formatKilograms(
@@ -1040,7 +1039,7 @@ class HaLitterRobotCard extends HTMLElement {
         ? this.formatVisits(
             matchedCat.visits,
           )
-        : "Keine eindeutige Zuordnung";
+        : "No clear match";
 
     const lastVisitTime =
       this.formatRelativeTime(
@@ -1178,16 +1177,16 @@ class HaLitterRobotCard extends HTMLElement {
           icon: powerConnected
             ? "mdi:power-plug"
             : "mdi:power-plug-off",
-          label: "Strom",
+          label: "Power",
           value: powerConnected
-            ? "Ein"
-            : "Aus",
+            ? "On"
+            : "Off",
           color: powerConnected
             ? "#62df76"
             : "#ff5c6c",
           title: powerConnected
-            ? "Stromversorgung eingesteckt"
-            : "Stromversorgung getrennt",
+            ? "Power connected"
+            : "Power disconnected",
           available:
             this.isAvailable(
               powerEntity,
@@ -1197,16 +1196,16 @@ class HaLitterRobotCard extends HTMLElement {
         {
           icon:
             "mdi:moon-waning-crescent",
-          label: "Ruhemodus",
+          label: "Sleep",
           value: sleepModeActive
-            ? "An"
-            : "Aus",
+            ? "On"
+            : "Off",
           color: sleepModeActive
             ? "#a879ff"
             : "#818ca0",
           title: sleepModeActive
-            ? "Ruhemodus aktiviert"
-            : "Ruhemodus deaktiviert",
+            ? "Sleep mode on"
+            : "Sleep mode off",
           available:
             this.isAvailable(
               sleepEntity,
@@ -1215,7 +1214,7 @@ class HaLitterRobotCard extends HTMLElement {
         },
         {
           icon: "mdi:sync",
-          label: "Zyklen",
+          label: "Cycles",
           value:
             cyclesValue === null
               ? "–"
@@ -1224,7 +1223,7 @@ class HaLitterRobotCard extends HTMLElement {
                 )}`,
           color: "#2f9cff",
           title:
-            "Gesamtanzahl der Reinigungszyklen",
+            "Total number of clean cycles",
           available:
             this.isAvailable(
               cyclesEntity,
@@ -1233,7 +1232,7 @@ class HaLitterRobotCard extends HTMLElement {
         },
         {
           icon: "mdi:clock-outline",
-          label: "Wartezeit",
+          label: "Wait",
           value: this.formatDelay(
             delayState,
             desktopStatusMode !==
@@ -1241,7 +1240,7 @@ class HaLitterRobotCard extends HTMLElement {
           ),
           color: "#ffbd24",
           title:
-            "Wartezeit bis zum Reinigungszyklus",
+            "Wait time before the clean cycle",
           available:
             this.isAvailable(
               cycleDelayEntity,
@@ -1250,11 +1249,11 @@ class HaLitterRobotCard extends HTMLElement {
         },
         {
           icon: "mdi:lightbulb-outline",
-          label: "Licht",
+          label: "Light",
           value: lightValue,
           color: "#ffd02f",
           title:
-            "Globe-Beleuchtung und Helligkeit",
+            "Globe light and brightness",
           available:
             this.isAvailable(
               globeLightEntity,
@@ -2412,7 +2411,7 @@ class HaLitterRobotCard extends HTMLElement {
 
           <section class="visit-card">
             <div class="section-title">
-              Letzter Besuch
+              Last visit
             </div>
 
             <div class="visit-content">
@@ -2442,7 +2441,7 @@ class HaLitterRobotCard extends HTMLElement {
 
           <section class="cats-card">
             <div class="section-title">
-              Unsere Katzen
+              Our cats
             </div>
 
             <div class="cats-grid">
@@ -2450,8 +2449,8 @@ class HaLitterRobotCard extends HTMLElement {
                 catsMarkup ||
                 `
                   <div class="empty-cats">
-                    Keine Katzen
-                    konfiguriert
+                    No cats
+                    configured
                   </div>
                 `
               }
@@ -2460,7 +2459,7 @@ class HaLitterRobotCard extends HTMLElement {
 
           <section class="details">
             <div class="section-title">
-              Streu & Abfall
+              Litter &amp; waste
             </div>
 
             <div class="levels">
@@ -2475,7 +2474,7 @@ class HaLitterRobotCard extends HTMLElement {
                   <div
                     class="level-name"
                   >
-                    Streu
+                    Litter
                   </div>
                 </div>
 
@@ -2521,7 +2520,7 @@ class HaLitterRobotCard extends HTMLElement {
                   <div
                     class="level-name"
                   >
-                    Abfallfach
+                    Waste drawer
                   </div>
                 </div>
 
@@ -2594,7 +2593,7 @@ class HaLitterRobotCard extends HTMLElement {
                       <span
                         class="control-label"
                       >
-                        Reinigung
+                        Clean
                       </span>
                     </button>
 
@@ -2644,7 +2643,7 @@ class HaLitterRobotCard extends HTMLElement {
                       <span
                         class="control-label"
                       >
-                        Zurücksetzen
+                        Reset
                       </span>
                     </button>
                   </div>
@@ -2779,8 +2778,8 @@ window.customCards =
 window.customCards.push({
   type: "ha-litter-robot-card",
   name:
-    "Nova UI – Litter-Robot Card",
+    "Nova UI – Litter-Robot Card (English)",
   description:
-    "A premium Litter-Robot 4 card for Home Assistant.",
+    "A premium Litter-Robot 4 card for Home Assistant. English translation of smokedropp23/ha-litter-robot-card.",
   preview: true,
 });
