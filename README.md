@@ -2,6 +2,18 @@
   <img src="assets/nova-ui-logo.png" alt="Nova UI – Litter-Robot Card" width="700">
 </p>
 
+> [!NOTE]
+> **This is an English fork of [smokedropp23/ha-litter-robot-card](https://github.com/smokedropp23/ha-litter-robot-card).**
+> Upstream hardcodes every user-visible string in German with no language option; this fork translates
+> them to English and drops the German decimal-comma formatting. No behaviour is changed otherwise.
+>
+> Forked at upstream tag `v0.3.0-alpha.6` (commit `e0094d5`). Note that upstream's *released asset* at
+> that tag is stale relative to its own `src/` — it was built before the "Make status chips interactive"
+> commit. This fork builds from `src/`, so it includes that change.
+>
+> To pull upstream changes: rebase onto upstream `main`, re-translate any new strings, run `npm run build`,
+> and cut a new tag + release with `dist/ha-litter-robot-card.js` attached as an asset.
+
 > [!WARNING]
 > This project is currently available as a public alpha release.
 > Features and configuration options may still change.

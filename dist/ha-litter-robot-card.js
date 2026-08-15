@@ -3,7 +3,7 @@ var e = class extends HTMLElement {
 	config;
 	_hass;
 	setConfig(e) {
-		if (!e) throw Error("Ungültige Kartenkonfiguration");
+		if (!e) throw Error("Invalid card configuration");
 		this.config = e, this.renderCard();
 	}
 	set hass(e) {
@@ -93,16 +93,16 @@ var e = class extends HTMLElement {
 	}
 	getStatusText(e) {
 		switch (e) {
-			case "rdy": return "Bereit";
-			case "ccp": return "Reinigung läuft";
-			case "cd": return "Katze erkannt";
-			case "cst": return "Wartezeit nach Besuch";
-			case "dfs": return "Abfallschublade voll";
+			case "rdy": return "Ready";
+			case "ccp": return "Cleaning";
+			case "cd": return "Cat detected";
+			case "cst": return "Settling after visit";
+			case "dfs": return "Waste drawer full";
 			case "p":
-			case "pd": return "Pausiert";
-			case "off": return "Ausgeschaltet";
+			case "pd": return "Paused";
+			case "off": return "Powered off";
 			case "offline": return "Offline";
-			default: return e === "unknown" ? "Status unbekannt" : e.toUpperCase();
+			default: return e === "unknown" ? "Status unknown" : e.toUpperCase();
 		}
 	}
 	getStatusColor(e) {
@@ -119,29 +119,26 @@ var e = class extends HTMLElement {
 			default: return "#8a8a8a";
 		}
 	}
-	poundsToKilograms(e) {
-		return e * .45359237;
-	}
-	formatKilograms(e) {
-		return e === null ? "–" : `${this.poundsToKilograms(e).toFixed(2).replace(".", ",")} kg`;
+	formatPounds(e) {
+		return e === null ? "–" : `${e.toFixed(2)} lbs`;
 	}
 	formatVisits(e) {
-		if (e === null) return "Keine Besuchsdaten";
+		if (e === null) return "No visit data";
 		let t = Math.round(e);
-		return t === 0 ? "Heute kein Besuch" : t === 1 ? "Heute 1 Besuch" : `Heute ${t} Besuche`;
+		return t === 0 ? "No visits today" : t === 1 ? "1 visit today" : `${t} visits today`;
 	}
 	formatRelativeTime(e) {
-		if (!e) return "Zeit unbekannt";
+		if (!e) return "Time unknown";
 		let t = new Date(e).getTime();
-		if (Number.isNaN(t)) return "Zeit unbekannt";
+		if (Number.isNaN(t)) return "Time unknown";
 		let n = Math.max(0, Math.floor((Date.now() - t) / 1e3));
-		if (n < 60) return "Gerade eben";
+		if (n < 60) return "Just now";
 		let r = Math.floor(n / 60);
-		if (r < 60) return `Vor ${r} Min.`;
+		if (r < 60) return `${r} min ago`;
 		let i = Math.floor(r / 60);
-		if (i < 24) return i === 1 ? "Vor 1 Std." : `Vor ${i} Std.`;
+		if (i < 24) return i === 1 ? "1 hr ago" : `${i} hrs ago`;
 		let a = Math.floor(i / 24);
-		return a === 1 ? "Vor 1 Tag" : `Vor ${a} Tagen`;
+		return a === 1 ? "1 day ago" : `${a} days ago`;
 	}
 	getLastDetectedCat(e) {
 		if (e === null || !this.config?.cats?.length) return null;
@@ -158,18 +155,18 @@ var e = class extends HTMLElement {
 		return !t || t.differenceLbs > n ? null : t;
 	}
 	getLevelText(e, t) {
-		return e === null ? "Keine Daten" : t === "litter" ? e >= 60 ? "Ausreichend" : e >= 30 ? "Wird weniger" : "Bitte nachfüllen" : e < 50 ? "Noch okay" : e < 80 ? "Bald leeren" : "Bitte leeren";
+		return e === null ? "No data" : t === "litter" ? e >= 60 ? "Plenty left" : e >= 30 ? "Running low" : "Refill needed" : e < 50 ? "Still fine" : e < 80 ? "Empty soon" : "Empty now";
 	}
 	formatSelectValue(e) {
 		return e === "unknown" || e === "unavailable" || e === "" ? "–" : {
-			on: "An",
-			off: "Aus",
+			on: "On",
+			off: "Off",
 			auto: "Auto",
-			low: "Niedrig",
-			medium: "Mittel",
-			high: "Hoch",
-			dim: "Gedimmt",
-			bright: "Hell"
+			low: "Low",
+			medium: "Medium",
+			high: "High",
+			dim: "Dim",
+			bright: "Bright"
 		}[e.toLowerCase()] ?? e;
 	}
 	getCompactLightValue(e, t) {
@@ -180,8 +177,8 @@ var e = class extends HTMLElement {
 		if (e === "unknown" || e === "unavailable" || e === "") return "–";
 		let n = e.match(/-?\d+(?:[.,]\d+)?/);
 		if (!n) return e;
-		let r = n[0].replace(".", ",");
-		return t ? r : `${r} Min.`;
+		let r = n[0];
+		return t ? r : `${r} min`;
 	}
 	getFirmwareVersion(e) {
 		if (!e) return "";
@@ -215,11 +212,16 @@ var e = class extends HTMLElement {
     `;
 	}
 	renderStatusChip(e, t, n) {
-		return e.available ? `
+		if (!e.available) return "";
+		let r = e.entityId ? "system-chip-interactive" : "", i = e.entityId ? `data-entity="${e.entityId}"` : "";
+		return `
       <div
-        class="system-chip"
+        class="system-chip ${r}"
         title="${e.title}"
         style="--chip-color: ${e.color};"
+        ${i}
+        role="${e.entityId ? "button" : "presentation"}"
+        tabindex="${e.entityId ? "0" : "-1"}"
       >
         <ha-icon
           class="system-chip-icon"
@@ -234,14 +236,31 @@ var e = class extends HTMLElement {
           ${this.renderChipContent(e, n)}
         </span>
       </div>
-    ` : "";
+    `;
 	}
 	async callService(e, t, n) {
 		if (this._hass) try {
 			await this._hass.callService(e, t, { entity_id: n });
 		} catch (n) {
-			console.error(`Nova UI: Dienst ${e}.${t} konnte nicht ausgeführt werden.`, n);
+			console.error(`Nova UI: service ${e}.${t} could not be called.`, n);
 		}
+	}
+	attachStatusChipEvents() {
+		let e = this.querySelectorAll(".system-chip[data-entity]"), t = (e) => {
+			let t = e.dataset.entity;
+			t && this.dispatchEvent(new CustomEvent("hass-more-info", {
+				detail: { entityId: t },
+				bubbles: !0,
+				composed: !0
+			}));
+		};
+		e.forEach((e) => {
+			e.addEventListener("click", () => {
+				t(e);
+			}), e.addEventListener("keydown", (n) => {
+				(n.key === "Enter" || n.key === " ") && (n.preventDefault(), t(e));
+			});
+		});
 	}
 	attachControlEvents() {
 		let e = this.config?.vacuum_entity ?? "vacuum.cleany_katzenklo", t = this.config?.reset_button_entity ?? "button.cleany_zurucksetzen", n = this.querySelector("[data-action=\"start\"]"), r = this.querySelector("[data-action=\"stop\"]"), i = this.querySelector("[data-action=\"reset\"]");
@@ -250,18 +269,18 @@ var e = class extends HTMLElement {
 		}), r?.addEventListener("click", async () => {
 			await this.callService("vacuum", "stop", e);
 		}), i?.addEventListener("click", async () => {
-			(this.config?.confirm_reset ?? !0) && !window.confirm("Litter-Robot wirklich zurücksetzen?") || await this.callService("button", "press", t);
+			(this.config?.confirm_reset ?? !0) && !window.confirm("Really reset the Litter-Robot?") || await this.callService("button", "press", t);
 		});
 	}
 	renderCard() {
-		let e = this.config?.name ?? "Litter-Robot 4", t = this.config?.entity ?? "sensor.cleany_statuscode", n = this.config?.sleep_entity ?? "binary_sensor.cleany_ruhemodus", r = this.config?.power_entity ?? "binary_sensor.cleany_stromversorgung", i = this.config?.cycles_entity ?? "sensor.cleany_gesamtzyklen", a = this.config?.cycle_delay_entity ?? "select.cleany_wartezeit_fur_den_reinigungszyklus_in_minuten", o = this.config?.globe_light_entity ?? "select.cleany_globe_beleuchtung", s = this.config?.globe_brightness_entity ?? "select.cleany_globe_helligkeit", c = this.config?.firmware_entity ?? "update.cleany_firmware", l = this.config?.last_pet_weight_entity ?? "sensor.cleany_gewicht_des_haustiers", u = this.config?.vacuum_entity ?? "vacuum.cleany_katzenklo", d = this.config?.reset_button_entity ?? "button.cleany_zurucksetzen", f = this.config?.show_status_bar ?? !0, p = this.config?.show_controls ?? !0, m = this.config?.status_bar_mode ?? "values", h = this.config?.status_bar_mobile_mode ?? "icons", g = this.getState(t), _ = this.getState(n) === "on", v = this.getLedDisplay(g, _), y = _ ? "Ruhemodus" : this.getStatusText(g), b = _ ? "#8b5cf6" : this.getStatusColor(g), x = this.getFirmwareVersion(c), S = this.getPercentage(this.config?.litter_entity), C = this.getPercentage(this.config?.waste_entity), w = S === null ? "–" : `${Math.round(S)} %`, T = C === null ? "–" : `${Math.round(C)} %`, E = S ?? 0, D = C ?? 0, O = this.getNumber(l), k = this.getEntity(l), A = this.getLastDetectedCat(O), j = A?.name ?? "Unbekannte Katze", M = this.formatKilograms(O), N = A ? this.formatVisits(A.visits) : "Keine eindeutige Zuordnung", P = this.formatRelativeTime(k?.last_updated), F = A?.image ? `
+		let e = this.config?.name ?? "Litter-Robot 4", t = this.config?.entity ?? "sensor.cleany_statuscode", n = this.config?.sleep_entity ?? "binary_sensor.cleany_ruhemodus", r = this.config?.power_entity ?? "binary_sensor.cleany_stromversorgung", i = this.config?.cycles_entity ?? "sensor.cleany_gesamtzyklen", a = this.config?.cycle_delay_entity ?? "select.cleany_wartezeit_fur_den_reinigungszyklus_in_minuten", o = this.config?.globe_light_entity ?? "select.cleany_globe_beleuchtung", s = this.config?.globe_brightness_entity ?? "select.cleany_globe_helligkeit", c = this.config?.firmware_entity ?? "update.cleany_firmware", l = this.config?.last_pet_weight_entity ?? "sensor.cleany_gewicht_des_haustiers", u = this.config?.vacuum_entity ?? "vacuum.cleany_katzenklo", d = this.config?.reset_button_entity ?? "button.cleany_zurucksetzen", f = this.config?.show_status_bar ?? !0, p = this.config?.show_controls ?? !0, m = this.config?.status_bar_mode ?? "values", h = this.config?.status_bar_mobile_mode ?? "icons", g = this.getState(t), _ = this.getState(n) === "on", v = this.getLedDisplay(g, _), y = _ ? "Sleep mode" : this.getStatusText(g), b = _ ? "#8b5cf6" : this.getStatusColor(g), x = this.getFirmwareVersion(c), S = this.getPercentage(this.config?.litter_entity), C = this.getPercentage(this.config?.waste_entity), w = S === null ? "–" : `${Math.round(S)} %`, T = C === null ? "–" : `${Math.round(C)} %`, E = S ?? 0, D = C ?? 0, O = this.getNumber(l), k = this.getEntity(l), A = this.getLastDetectedCat(O), j = A?.name ?? "Unknown cat", M = this.formatPounds(O), N = A ? this.formatVisits(A.visits) : "No clear match", P = this.formatRelativeTime(k?.last_updated), F = A?.image ? `
           <img
             class="cat-image"
             src="${A.image}"
             alt="${A.name}"
           />
         ` : "\n          <div class=\"cat-placeholder\">\n            🐈\n          </div>\n        ", I = (this.config?.cats ?? []).map((e, t) => {
-			let n = this.getNumber(e.weight_entity), r = this.getNumber(e.visits_entity), i = this.formatKilograms(n), a = this.formatVisits(r), o = e.image ? `
+			let n = this.getNumber(e.weight_entity), r = this.getNumber(e.visits_entity), i = this.formatPounds(n), a = this.formatVisits(r), o = e.image ? `
                 <img
                   class="profile-image"
                   src="${e.image}"
@@ -293,43 +312,48 @@ var e = class extends HTMLElement {
 		}).join(""), L = this.getState(r), R = this.getNumber(i), z = this.getState(a), B = this.getState(o), V = this.getState(s), H = L === "on", U = this.getCompactLightValue(B, V), W = this.isAvailable(u), G = this.isAvailable(d), K = [
 			{
 				icon: H ? "mdi:power-plug" : "mdi:power-plug-off",
-				label: "Strom",
-				value: H ? "Ein" : "Aus",
+				label: "Power",
+				value: H ? "On" : "Off",
 				color: H ? "#62df76" : "#ff5c6c",
-				title: H ? "Stromversorgung eingesteckt" : "Stromversorgung getrennt",
-				available: this.isAvailable(r)
+				title: H ? "Power connected" : "Power disconnected",
+				available: this.isAvailable(r),
+				entityId: r
 			},
 			{
 				icon: "mdi:moon-waning-crescent",
-				label: "Ruhemodus",
-				value: _ ? "An" : "Aus",
+				label: "Sleep",
+				value: _ ? "On" : "Off",
 				color: _ ? "#a879ff" : "#818ca0",
-				title: _ ? "Ruhemodus aktiviert" : "Ruhemodus deaktiviert",
-				available: this.isAvailable(n)
+				title: _ ? "Sleep mode on" : "Sleep mode off",
+				available: this.isAvailable(n),
+				entityId: n
 			},
 			{
 				icon: "mdi:sync",
-				label: "Zyklen",
+				label: "Cycles",
 				value: R === null ? "–" : `${Math.round(R)}`,
 				color: "#2f9cff",
-				title: "Gesamtanzahl der Reinigungszyklen",
-				available: this.isAvailable(i)
+				title: "Total number of clean cycles",
+				available: this.isAvailable(i),
+				entityId: i
 			},
 			{
 				icon: "mdi:clock-outline",
-				label: "Wartezeit",
+				label: "Wait",
 				value: this.formatDelay(z, m !== "labels"),
 				color: "#ffbd24",
-				title: "Wartezeit bis zum Reinigungszyklus",
-				available: this.isAvailable(a)
+				title: "Wait time before the clean cycle",
+				available: this.isAvailable(a),
+				entityId: a
 			},
 			{
 				icon: "mdi:lightbulb-outline",
-				label: "Licht",
+				label: "Light",
 				value: U,
 				color: "#ffd02f",
-				title: "Globe-Beleuchtung und Helligkeit",
-				available: this.isAvailable(o) || this.isAvailable(s)
+				title: "Globe light and brightness",
+				available: this.isAvailable(o) || this.isAvailable(s),
+				entityId: o
 			}
 		].map((e) => this.renderStatusChip(e, m, h)).join("");
 		this.innerHTML = `
@@ -588,6 +612,36 @@ var e = class extends HTMLElement {
           gap: 7px;
           padding: 5px 11px;
           white-space: nowrap;
+        }
+
+        .system-chip-interactive {
+          cursor: pointer;
+          border-radius: 11px;
+          transition:
+            background 0.15s ease,
+            transform 0.15s ease;
+        }
+
+        .system-chip-interactive:hover {
+          background:
+            rgba(
+              255,
+              255,
+              255,
+              0.055
+            );
+        }
+
+        .system-chip-interactive:active {
+          transform:
+            scale(0.96);
+        }
+
+        .system-chip-interactive:focus-visible {
+          outline:
+            2px solid
+            var(--chip-color);
+          outline-offset: -2px;
         }
 
         .system-chip +
@@ -1428,7 +1482,7 @@ var e = class extends HTMLElement {
 
           <section class="visit-card">
             <div class="section-title">
-              Letzter Besuch
+              Last visit
             </div>
 
             <div class="visit-content">
@@ -1458,17 +1512,17 @@ var e = class extends HTMLElement {
 
           <section class="cats-card">
             <div class="section-title">
-              Unsere Katzen
+              Our cats
             </div>
 
             <div class="cats-grid">
-              ${I || "\n                  <div class=\"empty-cats\">\n                    Keine Katzen\n                    konfiguriert\n                  </div>\n                "}
+              ${I || "\n                  <div class=\"empty-cats\">\n                    No cats\n                    configured\n                  </div>\n                "}
             </div>
           </section>
 
           <section class="details">
             <div class="section-title">
-              Streu & Abfall
+              Litter &amp; waste
             </div>
 
             <div class="levels">
@@ -1483,7 +1537,7 @@ var e = class extends HTMLElement {
                   <div
                     class="level-name"
                   >
-                    Streu
+                    Litter
                   </div>
                 </div>
 
@@ -1526,7 +1580,7 @@ var e = class extends HTMLElement {
                   <div
                     class="level-name"
                   >
-                    Abfallfach
+                    Waste drawer
                   </div>
                 </div>
 
@@ -1590,7 +1644,7 @@ var e = class extends HTMLElement {
                       <span
                         class="control-label"
                       >
-                        Reinigung
+                        Clean
                       </span>
                     </button>
 
@@ -1632,7 +1686,7 @@ var e = class extends HTMLElement {
                       <span
                         class="control-label"
                       >
-                        Zurücksetzen
+                        Reset
                       </span>
                     </button>
                   </div>
@@ -1640,7 +1694,7 @@ var e = class extends HTMLElement {
               ` : ""}
         </div>
       </ha-card>
-    `, this.attachControlEvents();
+    `, this.attachStatusChipEvents(), this.attachControlEvents();
 	}
 	getCardSize() {
 		return 12;
@@ -1690,8 +1744,8 @@ var e = class extends HTMLElement {
 };
 customElements.get("ha-litter-robot-card") || customElements.define("ha-litter-robot-card", e), window.customCards = window.customCards || [], window.customCards.push({
 	type: "ha-litter-robot-card",
-	name: "Nova UI – Litter-Robot Card",
-	description: "A premium Litter-Robot 4 card for Home Assistant.",
+	name: "Nova UI – Litter-Robot Card (English)",
+	description: "A premium Litter-Robot 4 card for Home Assistant. English translation of smokedropp23/ha-litter-robot-card.",
 	preview: !0
 });
 //#endregion
