@@ -273,13 +273,13 @@ var e = class extends HTMLElement {
 		});
 	}
 	renderCard() {
-		let e = this.config?.name ?? "Litter-Robot 4", t = this.config?.entity ?? "sensor.cleany_statuscode", n = this.config?.sleep_entity ?? "binary_sensor.cleany_ruhemodus", r = this.config?.power_entity ?? "binary_sensor.cleany_stromversorgung", i = this.config?.cycles_entity ?? "sensor.cleany_gesamtzyklen", a = this.config?.cycle_delay_entity ?? "select.cleany_wartezeit_fur_den_reinigungszyklus_in_minuten", o = this.config?.globe_light_entity ?? "select.cleany_globe_beleuchtung", s = this.config?.globe_brightness_entity ?? "select.cleany_globe_helligkeit", c = this.config?.firmware_entity ?? "update.cleany_firmware", l = this.config?.last_pet_weight_entity ?? "sensor.cleany_gewicht_des_haustiers", u = this.config?.vacuum_entity ?? "vacuum.cleany_katzenklo", d = this.config?.reset_button_entity ?? "button.cleany_zurucksetzen", f = this.config?.show_status_bar ?? !0, p = this.config?.show_controls ?? !0, m = this.config?.show_device_image ?? !0, h = this.config?.status_bar_mode ?? "values", g = this.config?.status_bar_mobile_mode ?? "icons", _ = this.getState(t), v = this.getState(n) === "on", y = this.getLedDisplay(_, v), b = v ? "Sleep mode" : this.getStatusText(_), x = v ? "#8b5cf6" : this.getStatusColor(_), S = (e) => e === "transparent" ? "none" : `drop-shadow(0 0 5px ${e}) drop-shadow(0 0 12px ${e})`, C = !v && (_ === "off" || _ === "offline") ? "none" : `0 0 10px ${x}`, w = this.getFirmwareVersion(c), T = this.getPercentage(this.config?.litter_entity), E = this.getPercentage(this.config?.waste_entity), D = T === null ? "–" : `${Math.round(T)} %`, O = E === null ? "–" : `${Math.round(E)} %`, k = T ?? 0, A = E ?? 0, j = this.getNumber(l), M = this.getEntity(l), N = this.getLastDetectedCat(j), P = N?.name ?? "Unknown cat", F = this.formatPounds(j), I = N ? this.formatVisits(N.visits) : "No clear match", L = this.formatRelativeTime(M?.last_updated), R = N?.image ? `
+		let e = this.config?.name ?? "Litter-Robot 4", t = this.config?.entity ?? "sensor.cleany_statuscode", n = this.config?.sleep_entity ?? "binary_sensor.cleany_ruhemodus", r = this.config?.power_entity ?? "binary_sensor.cleany_stromversorgung", i = this.config?.cycles_entity ?? "sensor.cleany_gesamtzyklen", a = this.config?.cycle_delay_entity ?? "select.cleany_wartezeit_fur_den_reinigungszyklus_in_minuten", o = this.config?.globe_light_entity ?? "select.cleany_globe_beleuchtung", s = this.config?.globe_brightness_entity ?? "select.cleany_globe_helligkeit", c = this.config?.firmware_entity ?? "update.cleany_firmware", l = this.config?.last_pet_weight_entity ?? "sensor.cleany_gewicht_des_haustiers", u = this.config?.vacuum_entity ?? "vacuum.cleany_katzenklo", d = this.config?.reset_button_entity ?? "button.cleany_zurucksetzen", f = this.config?.show_status_bar ?? !0, p = this.config?.show_controls ?? !0, m = this.config?.show_device_image ?? !0, h = this.config?.show_cat_roster ?? !0, g = this.config?.status_bar_mode ?? "values", _ = this.config?.status_bar_mobile_mode ?? "icons", v = this.getState(t), y = this.getState(n) === "on", b = this.getLedDisplay(v, y), x = y ? "Sleep mode" : this.getStatusText(v), S = y ? "#8b5cf6" : this.getStatusColor(v), C = (e) => e === "transparent" ? "none" : `drop-shadow(0 0 5px ${e}) drop-shadow(0 0 12px ${e})`, w = !y && (v === "off" || v === "offline") ? "none" : `0 0 10px ${S}`, T = this.getFirmwareVersion(c), E = this.getPercentage(this.config?.litter_entity), D = this.getPercentage(this.config?.waste_entity), O = E === null ? "–" : `${Math.round(E)} %`, k = D === null ? "–" : `${Math.round(D)} %`, A = E ?? 0, j = D ?? 0, M = this.getNumber(l), N = this.getEntity(l), P = this.getLastDetectedCat(M), F = P?.name ?? "Unknown cat", I = this.formatPounds(M), L = P ? this.formatVisits(P.visits) : "No clear match", R = this.formatRelativeTime(N?.last_updated), z = P?.image ? `
           <img
             class="cat-image"
-            src="${N.image}"
-            alt="${N.name}"
+            src="${P.image}"
+            alt="${P.name}"
           />
-        ` : "\n          <div class=\"cat-placeholder\">\n            🐈\n          </div>\n        ", z = (this.config?.cats ?? []).map((e, t) => {
+        ` : "\n          <div class=\"cat-placeholder\">\n            🐈\n          </div>\n        ", B = (this.config?.cats ?? []).map((e, t) => {
 			let n = this.getNumber(e.weight_entity), r = this.getNumber(e.visits_entity), i = this.formatPounds(n), a = this.formatVisits(r), o = e.image ? `
                 <img
                   class="profile-image"
@@ -309,29 +309,29 @@ var e = class extends HTMLElement {
               </div>
             </article>
           `;
-		}).join(""), B = this.getState(r), V = this.getNumber(i), H = this.getState(a), U = this.getState(o), W = this.getState(s), G = B === "on", K = this.getCompactLightValue(U, W), q = this.isAvailable(u), J = this.isAvailable(d), Y = [
+		}).join(""), V = this.getState(r), H = this.getNumber(i), U = this.getState(a), W = this.getState(o), G = this.getState(s), K = V === "on", q = this.getCompactLightValue(W, G), J = this.isAvailable(u), Y = this.isAvailable(d), X = [
 			{
-				icon: G ? "mdi:power-plug" : "mdi:power-plug-off",
+				icon: K ? "mdi:power-plug" : "mdi:power-plug-off",
 				label: "Power",
-				value: G ? "On" : "Off",
-				color: G ? "#62df76" : "#ff5c6c",
-				title: G ? "Power connected" : "Power disconnected",
+				value: K ? "On" : "Off",
+				color: K ? "#62df76" : "#ff5c6c",
+				title: K ? "Power connected" : "Power disconnected",
 				available: this.isAvailable(r),
 				entityId: r
 			},
 			{
 				icon: "mdi:moon-waning-crescent",
 				label: "Sleep",
-				value: v ? "On" : "Off",
-				color: v ? "#a879ff" : "#818ca0",
-				title: v ? "Sleep mode on" : "Sleep mode off",
+				value: y ? "On" : "Off",
+				color: y ? "#a879ff" : "#818ca0",
+				title: y ? "Sleep mode on" : "Sleep mode off",
 				available: this.isAvailable(n),
 				entityId: n
 			},
 			{
 				icon: "mdi:sync",
 				label: "Cycles",
-				value: V === null ? "–" : `${Math.round(V)}`,
+				value: H === null ? "–" : `${Math.round(H)}`,
 				color: "#2f9cff",
 				title: "Total number of clean cycles",
 				available: this.isAvailable(i),
@@ -340,7 +340,7 @@ var e = class extends HTMLElement {
 			{
 				icon: "mdi:clock-outline",
 				label: "Wait",
-				value: this.formatDelay(H, h !== "labels"),
+				value: this.formatDelay(U, g !== "labels"),
 				color: "#ffbd24",
 				title: "Wait time before the clean cycle",
 				available: this.isAvailable(a),
@@ -349,13 +349,13 @@ var e = class extends HTMLElement {
 			{
 				icon: "mdi:lightbulb-outline",
 				label: "Light",
-				value: K,
+				value: q,
 				color: "#ffd02f",
 				title: "Globe light and brightness",
 				available: this.isAvailable(o) || this.isAvailable(s),
 				entityId: o
 			}
-		].map((e) => this.renderStatusChip(e, h, g)).join("");
+		].map((e) => this.renderStatusChip(e, g, _)).join("");
 		this.innerHTML = `
       <style>
         ha-card {
@@ -1080,7 +1080,7 @@ var e = class extends HTMLElement {
 
         .progress-litter {
           width:
-            ${k}%;
+            ${A}%;
           background:
             linear-gradient(
               90deg,
@@ -1099,7 +1099,7 @@ var e = class extends HTMLElement {
 
         .progress-waste {
           width:
-            ${A}%;
+            ${j}%;
           background:
             linear-gradient(
               90deg,
@@ -1417,12 +1417,12 @@ var e = class extends HTMLElement {
                 ${e}
               </h2>
 
-              ${w ? `
+              ${T ? `
                     <div
                       class="firmware-subtitle"
                     >
                       Firmware
-                      ${w}
+                      ${T}
                     </div>
                   ` : ""}
             </div>
@@ -1431,13 +1431,13 @@ var e = class extends HTMLElement {
               <span
                 class="status-dot"
                 style="
-                  background: ${x};
-                  box-shadow: ${C};
+                  background: ${S};
+                  box-shadow: ${w};
                 "
               ></span>
 
               <span>
-                ${b}
+                ${x}
               </span>
             </div>
           </div>
@@ -1457,11 +1457,11 @@ var e = class extends HTMLElement {
                       class="
                         led
                         led-main
-                        ${y.mainMode}
+                        ${b.mainMode}
                       "
                       style="
-                        background: ${y.mainColor};
-                        filter: ${S(y.mainColor)};
+                        background: ${b.mainColor};
+                        filter: ${C(b.mainColor)};
                       "
                     ></div>
 
@@ -1469,22 +1469,22 @@ var e = class extends HTMLElement {
                       class="
                         led
                         led-small
-                        ${y.smallMode}
+                        ${b.smallMode}
                       "
                       style="
-                        background: ${y.smallColor};
-                        filter: ${S(y.smallColor)};
+                        background: ${b.smallColor};
+                        filter: ${C(b.smallColor)};
                       "
                     ></div>
                   </div>
                 </div>
               ` : ""}
 
-          ${f && Y ? `
+          ${f && X ? `
                 <section
                   class="system-status-bar"
                 >
-                  ${Y}
+                  ${X}
                 </section>
               ` : ""}
 
@@ -1494,39 +1494,41 @@ var e = class extends HTMLElement {
             </div>
 
             <div class="visit-content">
-              ${R}
+              ${z}
 
               <div class="visit-info">
                 <div class="visit-top">
                   <div class="cat-name">
-                    ${P}
+                    ${F}
                   </div>
 
                   <div class="visit-time">
-                    ${L}
+                    ${R}
                   </div>
                 </div>
 
                 <div class="visit-weight">
-                  ${F}
+                  ${I}
                 </div>
 
                 <div class="visit-count">
-                  ${I}
+                  ${L}
                 </div>
               </div>
             </div>
           </section>
 
-          <section class="cats-card">
-            <div class="section-title">
-              Our cats
-            </div>
+          ${h ? `
+                <section class="cats-card">
+                  <div class="section-title">
+                    Our cats
+                  </div>
 
-            <div class="cats-grid">
-              ${z || "\n                  <div class=\"empty-cats\">\n                    No cats\n                    configured\n                  </div>\n                "}
-            </div>
-          </section>
+                  <div class="cats-grid">
+                    ${B || "\n                        <div class=\"empty-cats\">\n                          No cats\n                          configured\n                        </div>\n                      "}
+                  </div>
+                </section>
+              ` : ""}
 
           <section class="details">
             <div class="section-title">
@@ -1557,13 +1559,13 @@ var e = class extends HTMLElement {
                   <div
                     class="level-value"
                   >
-                    ${D}
+                    ${O}
                   </div>
 
                   <div
                     class="level-state"
                   >
-                    ${this.getLevelText(T, "litter")}
+                    ${this.getLevelText(E, "litter")}
                   </div>
                 </div>
 
@@ -1600,13 +1602,13 @@ var e = class extends HTMLElement {
                   <div
                     class="level-value"
                   >
-                    ${O}
+                    ${k}
                   </div>
 
                   <div
                     class="level-state"
                   >
-                    ${this.getLevelText(E, "waste")}
+                    ${this.getLevelText(D, "waste")}
                   </div>
                 </div>
 
@@ -1642,7 +1644,7 @@ var e = class extends HTMLElement {
                       "
                       type="button"
                       data-action="start"
-                      ${q ? "" : "disabled"}
+                      ${J ? "" : "disabled"}
                     >
                       <ha-icon
                         class="control-icon"
@@ -1663,7 +1665,7 @@ var e = class extends HTMLElement {
                       "
                       type="button"
                       data-action="stop"
-                      ${q ? "" : "disabled"}
+                      ${J ? "" : "disabled"}
                     >
                       <ha-icon
                         class="control-icon"
@@ -1684,7 +1686,7 @@ var e = class extends HTMLElement {
                       "
                       type="button"
                       data-action="reset"
-                      ${J ? "" : "disabled"}
+                      ${Y ? "" : "disabled"}
                     >
                       <ha-icon
                         class="control-icon"

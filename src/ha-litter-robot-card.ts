@@ -41,6 +41,11 @@ interface LitterRobotCardConfig {
   // useful when several cards share one view and vertical space is tight.
   show_device_image?: boolean;
 
+  // Hides the in-card "Our cats" roster. `cats` still drives the last-visit
+  // identification and the weight matching, so turn this off when the roster is
+  // presented elsewhere on the dashboard and would only be duplicated here.
+  show_cat_roster?: boolean;
+
   power_entity?: string;
   cycles_entity?: string;
   cycle_delay_entity?: string;
@@ -943,6 +948,10 @@ class HaLitterRobotCard extends HTMLElement {
     const showDeviceImage =
       this.config
         ?.show_device_image ?? true;
+
+    const showCatRoster =
+      this.config
+        ?.show_cat_roster ?? true;
 
     const desktopStatusMode =
       this.config
@@ -2469,23 +2478,29 @@ class HaLitterRobotCard extends HTMLElement {
             </div>
           </section>
 
-          <section class="cats-card">
-            <div class="section-title">
-              Our cats
-            </div>
-
-            <div class="cats-grid">
-              ${
-                catsMarkup ||
-                `
-                  <div class="empty-cats">
-                    No cats
-                    configured
+          ${
+            showCatRoster
+              ? `
+                <section class="cats-card">
+                  <div class="section-title">
+                    Our cats
                   </div>
-                `
-              }
-            </div>
-          </section>
+
+                  <div class="cats-grid">
+                    ${
+                      catsMarkup ||
+                      `
+                        <div class="empty-cats">
+                          No cats
+                          configured
+                        </div>
+                      `
+                    }
+                  </div>
+                </section>
+              `
+              : ""
+          }
 
           <section class="details">
             <div class="section-title">
