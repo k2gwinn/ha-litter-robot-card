@@ -334,25 +334,14 @@ class HaLitterRobotCard extends HTMLElement {
     }
   }
 
-  private poundsToKilograms(
-    pounds: number,
-  ): number {
-    return pounds * 0.45359237;
-  }
-
-  private formatKilograms(
+  private formatPounds(
     pounds: number | null,
   ): string {
     if (pounds === null) {
       return "–";
     }
 
-    const kilograms =
-      this.poundsToKilograms(pounds);
-
-    return `${kilograms.toFixed(
-      2,
-    )} kg`;
+    return `${pounds.toFixed(2)} lbs`;
   }
 
   private formatVisits(
@@ -1030,7 +1019,7 @@ class HaLitterRobotCard extends HTMLElement {
       "Unknown cat";
 
     const lastVisitWeight =
-      this.formatKilograms(
+      this.formatPounds(
         lastPetWeight,
       );
 
@@ -1077,7 +1066,7 @@ class HaLitterRobotCard extends HTMLElement {
             );
 
           const weightDisplay =
-            this.formatKilograms(
+            this.formatPounds(
               weightLbs,
             );
 

@@ -119,11 +119,8 @@ var e = class extends HTMLElement {
 			default: return "#8a8a8a";
 		}
 	}
-	poundsToKilograms(e) {
-		return e * .45359237;
-	}
-	formatKilograms(e) {
-		return e === null ? "–" : `${this.poundsToKilograms(e).toFixed(2)} kg`;
+	formatPounds(e) {
+		return e === null ? "–" : `${e.toFixed(2)} lbs`;
 	}
 	formatVisits(e) {
 		if (e === null) return "No visit data";
@@ -276,14 +273,14 @@ var e = class extends HTMLElement {
 		});
 	}
 	renderCard() {
-		let e = this.config?.name ?? "Litter-Robot 4", t = this.config?.entity ?? "sensor.cleany_statuscode", n = this.config?.sleep_entity ?? "binary_sensor.cleany_ruhemodus", r = this.config?.power_entity ?? "binary_sensor.cleany_stromversorgung", i = this.config?.cycles_entity ?? "sensor.cleany_gesamtzyklen", a = this.config?.cycle_delay_entity ?? "select.cleany_wartezeit_fur_den_reinigungszyklus_in_minuten", o = this.config?.globe_light_entity ?? "select.cleany_globe_beleuchtung", s = this.config?.globe_brightness_entity ?? "select.cleany_globe_helligkeit", c = this.config?.firmware_entity ?? "update.cleany_firmware", l = this.config?.last_pet_weight_entity ?? "sensor.cleany_gewicht_des_haustiers", u = this.config?.vacuum_entity ?? "vacuum.cleany_katzenklo", d = this.config?.reset_button_entity ?? "button.cleany_zurucksetzen", f = this.config?.show_status_bar ?? !0, p = this.config?.show_controls ?? !0, m = this.config?.status_bar_mode ?? "values", h = this.config?.status_bar_mobile_mode ?? "icons", g = this.getState(t), _ = this.getState(n) === "on", v = this.getLedDisplay(g, _), y = _ ? "Sleep mode" : this.getStatusText(g), b = _ ? "#8b5cf6" : this.getStatusColor(g), x = this.getFirmwareVersion(c), S = this.getPercentage(this.config?.litter_entity), C = this.getPercentage(this.config?.waste_entity), w = S === null ? "–" : `${Math.round(S)} %`, T = C === null ? "–" : `${Math.round(C)} %`, E = S ?? 0, D = C ?? 0, O = this.getNumber(l), k = this.getEntity(l), A = this.getLastDetectedCat(O), j = A?.name ?? "Unknown cat", M = this.formatKilograms(O), N = A ? this.formatVisits(A.visits) : "No clear match", P = this.formatRelativeTime(k?.last_updated), F = A?.image ? `
+		let e = this.config?.name ?? "Litter-Robot 4", t = this.config?.entity ?? "sensor.cleany_statuscode", n = this.config?.sleep_entity ?? "binary_sensor.cleany_ruhemodus", r = this.config?.power_entity ?? "binary_sensor.cleany_stromversorgung", i = this.config?.cycles_entity ?? "sensor.cleany_gesamtzyklen", a = this.config?.cycle_delay_entity ?? "select.cleany_wartezeit_fur_den_reinigungszyklus_in_minuten", o = this.config?.globe_light_entity ?? "select.cleany_globe_beleuchtung", s = this.config?.globe_brightness_entity ?? "select.cleany_globe_helligkeit", c = this.config?.firmware_entity ?? "update.cleany_firmware", l = this.config?.last_pet_weight_entity ?? "sensor.cleany_gewicht_des_haustiers", u = this.config?.vacuum_entity ?? "vacuum.cleany_katzenklo", d = this.config?.reset_button_entity ?? "button.cleany_zurucksetzen", f = this.config?.show_status_bar ?? !0, p = this.config?.show_controls ?? !0, m = this.config?.status_bar_mode ?? "values", h = this.config?.status_bar_mobile_mode ?? "icons", g = this.getState(t), _ = this.getState(n) === "on", v = this.getLedDisplay(g, _), y = _ ? "Sleep mode" : this.getStatusText(g), b = _ ? "#8b5cf6" : this.getStatusColor(g), x = this.getFirmwareVersion(c), S = this.getPercentage(this.config?.litter_entity), C = this.getPercentage(this.config?.waste_entity), w = S === null ? "–" : `${Math.round(S)} %`, T = C === null ? "–" : `${Math.round(C)} %`, E = S ?? 0, D = C ?? 0, O = this.getNumber(l), k = this.getEntity(l), A = this.getLastDetectedCat(O), j = A?.name ?? "Unknown cat", M = this.formatPounds(O), N = A ? this.formatVisits(A.visits) : "No clear match", P = this.formatRelativeTime(k?.last_updated), F = A?.image ? `
           <img
             class="cat-image"
             src="${A.image}"
             alt="${A.name}"
           />
         ` : "\n          <div class=\"cat-placeholder\">\n            🐈\n          </div>\n        ", I = (this.config?.cats ?? []).map((e, t) => {
-			let n = this.getNumber(e.weight_entity), r = this.getNumber(e.visits_entity), i = this.formatKilograms(n), a = this.formatVisits(r), o = e.image ? `
+			let n = this.getNumber(e.weight_entity), r = this.getNumber(e.visits_entity), i = this.formatPounds(n), a = this.formatVisits(r), o = e.image ? `
                 <img
                   class="profile-image"
                   src="${e.image}"
