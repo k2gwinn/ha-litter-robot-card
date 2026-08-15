@@ -36,6 +36,11 @@ interface LitterRobotCardConfig {
   status_bar_mode?: StatusBarMode;
   status_bar_mobile_mode?: StatusBarMode;
 
+  // Hides the large Litter-Robot photo and its LED overlay. The status is still
+  // carried by the status badge, so this only costs the decorative visual --
+  // useful when several cards share one view and vertical space is tight.
+  show_device_image?: boolean;
+
   power_entity?: string;
   cycles_entity?: string;
   cycle_delay_entity?: string;
@@ -930,6 +935,10 @@ class HaLitterRobotCard extends HTMLElement {
     const showControls =
       this.config
         ?.show_controls ?? true;
+
+    const showDeviceImage =
+      this.config
+        ?.show_device_image ?? true;
 
     const desktopStatusMode =
       this.config
@@ -2357,33 +2366,39 @@ class HaLitterRobotCard extends HTMLElement {
             </div>
           </div>
 
-          <div class="robot-area">
-            <div
-              class="robot-image-wrap"
-            >
-              <img
-                class="robot-base"
-                src="/local/nova-ui/litter-robot.png"
-                alt="${name}"
-              />
+          ${
+            showDeviceImage
+              ? `
+                <div class="robot-area">
+                  <div
+                    class="robot-image-wrap"
+                  >
+                    <img
+                      class="robot-base"
+                      src="/local/nova-ui/litter-robot.png"
+                      alt="${name}"
+                    />
 
-              <div
-                class="
-                  led
-                  led-main
-                  ${display.mainMode}
-                "
-              ></div>
+                    <div
+                      class="
+                        led
+                        led-main
+                        ${display.mainMode}
+                      "
+                    ></div>
 
-              <div
-                class="
-                  led
-                  led-small
-                  ${display.smallMode}
-                "
-              ></div>
-            </div>
-          </div>
+                    <div
+                      class="
+                        led
+                        led-small
+                        ${display.smallMode}
+                      "
+                    ></div>
+                  </div>
+                </div>
+              `
+              : ""
+          }
 
           ${
             showStatusBar &&
