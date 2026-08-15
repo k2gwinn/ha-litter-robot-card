@@ -273,13 +273,13 @@ var e = class extends HTMLElement {
 		});
 	}
 	renderCard() {
-		let e = this.config?.name ?? "Litter-Robot 4", t = this.config?.entity ?? "sensor.cleany_statuscode", n = this.config?.sleep_entity ?? "binary_sensor.cleany_ruhemodus", r = this.config?.power_entity ?? "binary_sensor.cleany_stromversorgung", i = this.config?.cycles_entity ?? "sensor.cleany_gesamtzyklen", a = this.config?.cycle_delay_entity ?? "select.cleany_wartezeit_fur_den_reinigungszyklus_in_minuten", o = this.config?.globe_light_entity ?? "select.cleany_globe_beleuchtung", s = this.config?.globe_brightness_entity ?? "select.cleany_globe_helligkeit", c = this.config?.firmware_entity ?? "update.cleany_firmware", l = this.config?.last_pet_weight_entity ?? "sensor.cleany_gewicht_des_haustiers", u = this.config?.vacuum_entity ?? "vacuum.cleany_katzenklo", d = this.config?.reset_button_entity ?? "button.cleany_zurucksetzen", f = this.config?.show_status_bar ?? !0, p = this.config?.show_controls ?? !0, m = this.config?.status_bar_mode ?? "values", h = this.config?.status_bar_mobile_mode ?? "icons", g = this.getState(t), _ = this.getState(n) === "on", v = this.getLedDisplay(g, _), y = _ ? "Sleep mode" : this.getStatusText(g), b = _ ? "#8b5cf6" : this.getStatusColor(g), x = this.getFirmwareVersion(c), S = this.getPercentage(this.config?.litter_entity), C = this.getPercentage(this.config?.waste_entity), w = S === null ? "–" : `${Math.round(S)} %`, T = C === null ? "–" : `${Math.round(C)} %`, E = S ?? 0, D = C ?? 0, O = this.getNumber(l), k = this.getEntity(l), A = this.getLastDetectedCat(O), j = A?.name ?? "Unknown cat", M = this.formatPounds(O), N = A ? this.formatVisits(A.visits) : "No clear match", P = this.formatRelativeTime(k?.last_updated), F = A?.image ? `
+		let e = this.config?.name ?? "Litter-Robot 4", t = this.config?.entity ?? "sensor.cleany_statuscode", n = this.config?.sleep_entity ?? "binary_sensor.cleany_ruhemodus", r = this.config?.power_entity ?? "binary_sensor.cleany_stromversorgung", i = this.config?.cycles_entity ?? "sensor.cleany_gesamtzyklen", a = this.config?.cycle_delay_entity ?? "select.cleany_wartezeit_fur_den_reinigungszyklus_in_minuten", o = this.config?.globe_light_entity ?? "select.cleany_globe_beleuchtung", s = this.config?.globe_brightness_entity ?? "select.cleany_globe_helligkeit", c = this.config?.firmware_entity ?? "update.cleany_firmware", l = this.config?.last_pet_weight_entity ?? "sensor.cleany_gewicht_des_haustiers", u = this.config?.vacuum_entity ?? "vacuum.cleany_katzenklo", d = this.config?.reset_button_entity ?? "button.cleany_zurucksetzen", f = this.config?.show_status_bar ?? !0, p = this.config?.show_controls ?? !0, m = this.config?.show_device_image ?? !0, h = this.config?.status_bar_mode ?? "values", g = this.config?.status_bar_mobile_mode ?? "icons", _ = this.getState(t), v = this.getState(n) === "on", y = this.getLedDisplay(_, v), b = v ? "Sleep mode" : this.getStatusText(_), x = v ? "#8b5cf6" : this.getStatusColor(_), S = this.getFirmwareVersion(c), C = this.getPercentage(this.config?.litter_entity), w = this.getPercentage(this.config?.waste_entity), T = C === null ? "–" : `${Math.round(C)} %`, E = w === null ? "–" : `${Math.round(w)} %`, D = C ?? 0, O = w ?? 0, k = this.getNumber(l), A = this.getEntity(l), j = this.getLastDetectedCat(k), M = j?.name ?? "Unknown cat", N = this.formatPounds(k), P = j ? this.formatVisits(j.visits) : "No clear match", F = this.formatRelativeTime(A?.last_updated), I = j?.image ? `
           <img
             class="cat-image"
-            src="${A.image}"
-            alt="${A.name}"
+            src="${j.image}"
+            alt="${j.name}"
           />
-        ` : "\n          <div class=\"cat-placeholder\">\n            🐈\n          </div>\n        ", I = (this.config?.cats ?? []).map((e, t) => {
+        ` : "\n          <div class=\"cat-placeholder\">\n            🐈\n          </div>\n        ", L = (this.config?.cats ?? []).map((e, t) => {
 			let n = this.getNumber(e.weight_entity), r = this.getNumber(e.visits_entity), i = this.formatPounds(n), a = this.formatVisits(r), o = e.image ? `
                 <img
                   class="profile-image"
@@ -309,29 +309,29 @@ var e = class extends HTMLElement {
               </div>
             </article>
           `;
-		}).join(""), L = this.getState(r), R = this.getNumber(i), z = this.getState(a), B = this.getState(o), V = this.getState(s), H = L === "on", U = this.getCompactLightValue(B, V), W = this.isAvailable(u), G = this.isAvailable(d), K = [
+		}).join(""), R = this.getState(r), z = this.getNumber(i), B = this.getState(a), V = this.getState(o), H = this.getState(s), U = R === "on", W = this.getCompactLightValue(V, H), G = this.isAvailable(u), K = this.isAvailable(d), q = [
 			{
-				icon: H ? "mdi:power-plug" : "mdi:power-plug-off",
+				icon: U ? "mdi:power-plug" : "mdi:power-plug-off",
 				label: "Power",
-				value: H ? "On" : "Off",
-				color: H ? "#62df76" : "#ff5c6c",
-				title: H ? "Power connected" : "Power disconnected",
+				value: U ? "On" : "Off",
+				color: U ? "#62df76" : "#ff5c6c",
+				title: U ? "Power connected" : "Power disconnected",
 				available: this.isAvailable(r),
 				entityId: r
 			},
 			{
 				icon: "mdi:moon-waning-crescent",
 				label: "Sleep",
-				value: _ ? "On" : "Off",
-				color: _ ? "#a879ff" : "#818ca0",
-				title: _ ? "Sleep mode on" : "Sleep mode off",
+				value: v ? "On" : "Off",
+				color: v ? "#a879ff" : "#818ca0",
+				title: v ? "Sleep mode on" : "Sleep mode off",
 				available: this.isAvailable(n),
 				entityId: n
 			},
 			{
 				icon: "mdi:sync",
 				label: "Cycles",
-				value: R === null ? "–" : `${Math.round(R)}`,
+				value: z === null ? "–" : `${Math.round(z)}`,
 				color: "#2f9cff",
 				title: "Total number of clean cycles",
 				available: this.isAvailable(i),
@@ -340,7 +340,7 @@ var e = class extends HTMLElement {
 			{
 				icon: "mdi:clock-outline",
 				label: "Wait",
-				value: this.formatDelay(z, m !== "labels"),
+				value: this.formatDelay(B, h !== "labels"),
 				color: "#ffbd24",
 				title: "Wait time before the clean cycle",
 				available: this.isAvailable(a),
@@ -349,13 +349,13 @@ var e = class extends HTMLElement {
 			{
 				icon: "mdi:lightbulb-outline",
 				label: "Light",
-				value: U,
+				value: W,
 				color: "#ffd02f",
 				title: "Globe light and brightness",
 				available: this.isAvailable(o) || this.isAvailable(s),
 				entityId: o
 			}
-		].map((e) => this.renderStatusChip(e, m, h)).join("");
+		].map((e) => this.renderStatusChip(e, h, g)).join("");
 		this.innerHTML = `
       <style>
         ha-card {
@@ -449,10 +449,10 @@ var e = class extends HTMLElement {
           height: 9px;
           border-radius: 50%;
           background:
-            ${b};
+            ${x};
           box-shadow:
             0 0 10px
-            ${b};
+            ${x};
         }
 
         .robot-area {
@@ -487,7 +487,7 @@ var e = class extends HTMLElement {
 
         .led-main {
           background:
-            ${v.mainColor};
+            ${y.mainColor};
 
           -webkit-mask-image:
             url(
@@ -511,17 +511,17 @@ var e = class extends HTMLElement {
           filter:
             drop-shadow(
               0 0 5px
-              ${v.mainColor}
+              ${y.mainColor}
             )
             drop-shadow(
               0 0 12px
-              ${v.mainColor}
+              ${y.mainColor}
             );
         }
 
         .led-small {
           background:
-            ${v.smallColor};
+            ${y.smallColor};
 
           -webkit-mask-image:
             url(
@@ -545,11 +545,11 @@ var e = class extends HTMLElement {
           filter:
             drop-shadow(
               0 0 5px
-              ${v.smallColor}
+              ${y.smallColor}
             )
             drop-shadow(
               0 0 12px
-              ${v.smallColor}
+              ${y.smallColor}
             );
         }
 
@@ -1092,7 +1092,7 @@ var e = class extends HTMLElement {
 
         .progress-litter {
           width:
-            ${E}%;
+            ${D}%;
           background:
             linear-gradient(
               90deg,
@@ -1111,7 +1111,7 @@ var e = class extends HTMLElement {
 
         .progress-waste {
           width:
-            ${D}%;
+            ${O}%;
           background:
             linear-gradient(
               90deg,
@@ -1423,12 +1423,12 @@ var e = class extends HTMLElement {
                 ${e}
               </h2>
 
-              ${x ? `
+              ${S ? `
                     <div
                       class="firmware-subtitle"
                     >
                       Firmware
-                      ${x}
+                      ${S}
                     </div>
                   ` : ""}
             </div>
@@ -1439,44 +1439,46 @@ var e = class extends HTMLElement {
               ></span>
 
               <span>
-                ${y}
+                ${b}
               </span>
             </div>
           </div>
 
-          <div class="robot-area">
-            <div
-              class="robot-image-wrap"
-            >
-              <img
-                class="robot-base"
-                src="/local/nova-ui/litter-robot.png"
-                alt="${e}"
-              />
+          ${m ? `
+                <div class="robot-area">
+                  <div
+                    class="robot-image-wrap"
+                  >
+                    <img
+                      class="robot-base"
+                      src="/local/nova-ui/litter-robot.png"
+                      alt="${e}"
+                    />
 
-              <div
-                class="
-                  led
-                  led-main
-                  ${v.mainMode}
-                "
-              ></div>
+                    <div
+                      class="
+                        led
+                        led-main
+                        ${y.mainMode}
+                      "
+                    ></div>
 
-              <div
-                class="
-                  led
-                  led-small
-                  ${v.smallMode}
-                "
-              ></div>
-            </div>
-          </div>
+                    <div
+                      class="
+                        led
+                        led-small
+                        ${y.smallMode}
+                      "
+                    ></div>
+                  </div>
+                </div>
+              ` : ""}
 
-          ${f && K ? `
+          ${f && q ? `
                 <section
                   class="system-status-bar"
                 >
-                  ${K}
+                  ${q}
                 </section>
               ` : ""}
 
@@ -1486,25 +1488,25 @@ var e = class extends HTMLElement {
             </div>
 
             <div class="visit-content">
-              ${F}
+              ${I}
 
               <div class="visit-info">
                 <div class="visit-top">
                   <div class="cat-name">
-                    ${j}
+                    ${M}
                   </div>
 
                   <div class="visit-time">
-                    ${P}
+                    ${F}
                   </div>
                 </div>
 
                 <div class="visit-weight">
-                  ${M}
+                  ${N}
                 </div>
 
                 <div class="visit-count">
-                  ${N}
+                  ${P}
                 </div>
               </div>
             </div>
@@ -1516,7 +1518,7 @@ var e = class extends HTMLElement {
             </div>
 
             <div class="cats-grid">
-              ${I || "\n                  <div class=\"empty-cats\">\n                    No cats\n                    configured\n                  </div>\n                "}
+              ${L || "\n                  <div class=\"empty-cats\">\n                    No cats\n                    configured\n                  </div>\n                "}
             </div>
           </section>
 
@@ -1549,13 +1551,13 @@ var e = class extends HTMLElement {
                   <div
                     class="level-value"
                   >
-                    ${w}
+                    ${T}
                   </div>
 
                   <div
                     class="level-state"
                   >
-                    ${this.getLevelText(S, "litter")}
+                    ${this.getLevelText(C, "litter")}
                   </div>
                 </div>
 
@@ -1592,13 +1594,13 @@ var e = class extends HTMLElement {
                   <div
                     class="level-value"
                   >
-                    ${T}
+                    ${E}
                   </div>
 
                   <div
                     class="level-state"
                   >
-                    ${this.getLevelText(C, "waste")}
+                    ${this.getLevelText(w, "waste")}
                   </div>
                 </div>
 
@@ -1634,7 +1636,7 @@ var e = class extends HTMLElement {
                       "
                       type="button"
                       data-action="start"
-                      ${W ? "" : "disabled"}
+                      ${G ? "" : "disabled"}
                     >
                       <ha-icon
                         class="control-icon"
@@ -1655,7 +1657,7 @@ var e = class extends HTMLElement {
                       "
                       type="button"
                       data-action="stop"
-                      ${W ? "" : "disabled"}
+                      ${G ? "" : "disabled"}
                     >
                       <ha-icon
                         class="control-icon"
@@ -1676,7 +1678,7 @@ var e = class extends HTMLElement {
                       "
                       type="button"
                       data-action="reset"
-                      ${G ? "" : "disabled"}
+                      ${K ? "" : "disabled"}
                     >
                       <ha-icon
                         class="control-icon"
