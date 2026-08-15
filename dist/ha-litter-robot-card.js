@@ -1621,7 +1621,7 @@ var e = class extends HTMLElement {
                   <div
                     class="section-title"
                   >
-                    Bedienung
+                    Controls
                   </div>
 
                   <div
@@ -1665,7 +1665,7 @@ var e = class extends HTMLElement {
                       <span
                         class="control-label"
                       >
-                        Anhalten
+                        Stop
                       </span>
                     </button>
 

@@ -2555,7 +2555,7 @@ class HaLitterRobotCard extends HTMLElement {
                   <div
                     class="section-title"
                   >
-                    Bedienung
+                    Controls
                   </div>
 
                   <div
@@ -2607,7 +2607,7 @@ class HaLitterRobotCard extends HTMLElement {
                       <span
                         class="control-label"
                       >
-                        Anhalten
+                        Stop
                       </span>
                     </button>
 
